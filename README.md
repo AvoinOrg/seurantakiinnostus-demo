@@ -37,8 +37,6 @@ Build the bundle into the dist folder with
 
 ### Deploying
 
-The app is deployed on github pages. After running the build command, deploy with
-
-    npm run deploy
+The app is deployed on Netlify automatically when commits are made into the deploy branch.
 
 Alternatively the bundle can be manually deployed to any other server, such as an AWS S3 bucket.
