@@ -87,7 +87,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 1,
         Ts: item.attributes.monint_Ts_number_201912121702030
           ? Number(
               item.attributes.monint_Ts_number_201912121702030.replace(
@@ -95,7 +95,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         Tr: item.attributes.monint_Tr_number_201912121702034
           ? Number(
               item.attributes.monint_Tr_number_201912121702034.replace(
@@ -103,7 +103,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         Sv: item.attributes.monint_Sv_number_201912121702028
           ? Number(
               item.attributes.monint_Sv_number_201912121702028.replace(
@@ -111,7 +111,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 100,
         Ss: item.attributes.monint_Ss_number_201912121702032
           ? Number(
               item.attributes.monint_Ss_number_201912121702032.replace(
@@ -119,7 +119,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         Sr: item.attributes.monint_Sr_number_201912121702035
           ? Number(
               item.attributes.monint_Sr_number_201912121702035.replace(
@@ -127,7 +127,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         kSv: item.attributes.monint_kSv_number_201912121702029
           ? Number(
               item.attributes.monint_kSv_number_201912121702029.replace(
@@ -135,7 +135,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         kSs: item.attributes.monint_kSs_number_201912121702033
           ? Number(
               item.attributes.monint_kSs_number_201912121702033.replace(
@@ -143,7 +143,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         kSr: item.attributes.monint_kSr_number_201912121702037
           ? Number(
               item.attributes.monint_kSr_number_201912121702037.replace(
@@ -151,7 +151,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         Sinf: item.attributes.monint_Sinf_number_201912121702038
           ? Number(
               item.attributes.monint_Sinf_number_201912121702038.replace(
@@ -159,7 +159,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         dSv: item.attributes.monint_dSv_number_201912121702027
           ? Number(
               item.attributes.monint_dSv_number_201912121702027.replace(
@@ -167,7 +167,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         Spmin: item.attributes.monint_Spmin_number_201912121753281
           ? Number(
               item.attributes.monint_Spmin_number_201912121753281.replace(
@@ -175,7 +175,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         Spmax: item.attributes.monint_Spmax_number_201912121756330
           ? Number(
               item.attributes.monint_Spmax_number_201912121756330.replace(
@@ -183,7 +183,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
         Somin: item.attributes.monint_Somin_number_201912121743338
           ? Number(
               item.attributes.monint_Somin_number_201912121743338.replace(
@@ -191,7 +191,7 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
                 '.',
               ),
             )
-          : null,
+          : 0,
       }));
       return items;
     })
