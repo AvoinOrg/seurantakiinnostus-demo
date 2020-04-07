@@ -3,11 +3,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const APP_PATH = path.resolve(__dirname, 'src');
 
+console.log(APP_PATH);
+
 module.exports = {
-  entry: APP_PATH,
+  entry: {
+    index: APP_PATH + '/index.tsx',
+    // , data: APP_PATH + '/data/jarvet.json'
+  },
 
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
 

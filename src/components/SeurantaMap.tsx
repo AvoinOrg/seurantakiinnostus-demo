@@ -26,7 +26,12 @@ import {
 import ObservationPoint from './ObservationPoint';
 import Loading from './Loading';
 
-const lakes: any = require('../assets/jarvet.json');
+async function getLakes() {
+  const data = await import(
+    /* webpackChunkName: "lakes" */ '../data/jarvet.json'
+  );
+  return data;
+}
 
 const SeurantaMap: React.FC<any> = (props: {
   openModal: any;
@@ -38,6 +43,7 @@ const SeurantaMap: React.FC<any> = (props: {
   const [monInterests, setMonInterests] = useState<any>(null);
   const [monInterestTriggers, setMonInterestTriggers] = useState<any>(null);
   const [obs, setObs] = useState<any>(null);
+  const [lakes, setLakes] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [position, setPosition] = useState<number[] | null>([
     65.449704,
@@ -50,6 +56,11 @@ const SeurantaMap: React.FC<any> = (props: {
       setPosition([pos.coords.latitude, pos.coords.longitude]);
       setZoom(15);
     });
+
+    getLakes().then((component: any) => {
+      setLakes(component);
+    });
+
     getObservationPoints().then(setObsPoints);
     getMonitoringInterestDefs().then(setMonInterestDefs);
     getMonitoringInterests().then(setMonInterests);
@@ -68,7 +79,8 @@ const SeurantaMap: React.FC<any> = (props: {
       obs &&
       monInterestDefs &&
       monInterests &&
-      monInterestTriggers
+      monInterestTriggers &&
+      lakes
     ) {
       const items: any = [];
 
@@ -323,7 +335,14 @@ const SeurantaMap: React.FC<any> = (props: {
       setLoading(false);
       setObsPointItems(items);
     }
-  }, [obsPoints, obs, monInterestDefs, monInterests, monInterestTriggers]);
+  }, [
+    obsPoints,
+    obs,
+    monInterestDefs,
+    monInterests,
+    monInterestTriggers,
+    lakes,
+  ]);
 
   useEffect(() => {
     if (monInterestTriggers && monInterests) {
@@ -395,7 +414,7 @@ const MapContainer: any = styled(Map)`
   display: flex;
   flex: 1;
   background: ${Theme.color.primary};
-  font-family ${Theme.font.secondary};
+  font-family: ${Theme.font.secondary};
   background: white;
 `;
 
