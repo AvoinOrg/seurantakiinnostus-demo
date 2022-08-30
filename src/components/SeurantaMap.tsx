@@ -390,6 +390,32 @@ const SeurantaMap: React.FC<any> = () => {
     }
   }, [monInterestTriggers, monInterests]);
 
+  // const lakeLayer = vectorGrid.protobuf(
+  //   'https://gis.avoin.org/geoserver/gwc/service/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=external:lakes&STYLE=polygon&FORMAT=image/png&TILEMATRIXSET=EPSG:3857&TILEMATRIX=EPSG:3857:{z}&TILEROW={x}&TILECOL={y}',
+  //   {
+  //     tms: true,
+  //     attribution:
+  //       '&copy; Karttamateriaali <a href="http://www.maanmittauslaitos.fi/avoindata">Maanmittauslaitos</a>',
+  //   },
+  // );
+
+  useEffect(() => {
+    if (map && position) {
+      map.setView(position, zoom);
+    }
+  }, [map, position]);
+
+  useEffect(() => {
+    if (lakesLayer) {
+      if (zoom || zoom === 0) {
+        if (zoom > 10) {
+          lakesLayer.remove();
+        } else {
+          lakesLayer.addTo(map);
+        }
+      }
+    }
+  }, [zoom]);
   return (
     <>
       <TileLayer
