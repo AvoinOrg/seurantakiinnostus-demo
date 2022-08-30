@@ -27,12 +27,10 @@ import ObservationPoint from './ObservationPoint';
 import Loading from './Loading';
 import { StateContext } from '../components/State';
 
-async function getLakes() {
-  const data = await import(
-    /* webpackChunkName: "lakes" */ '../data/jarvet.json'
-  );
+const getLakes = async () => {
+  const data = await import('../data/lakes.json');
   return data;
-}
+};
 
   const { handleModalClick, loading, setLoading }: any =
     useContext(StateContext);
