@@ -442,6 +442,18 @@ const LegendImg: any = styled.img.attrs({
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
 `;
 
+const LoadingContainer: any = styled.div`
+  position: fixed;
+  bottom: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex: 1;
+  z-index: 999;
+`;
+
 interface ObsPointItemData {
   id: string;
   date: Date;
