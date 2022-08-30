@@ -98,7 +98,7 @@ const defaultZoom = 6;
 
       const defs = arrayToObject(monInterestDefs, 'id');
 
-      monInterests.forEach(interest => {
+      monInterests.forEach((interest) => {
         const itemData: any = {};
         itemData.id = interest.id;
         itemData.radius = interest.radius;
@@ -121,7 +121,7 @@ const defaultZoom = 6;
 
           itemData.trigger = null;
 
-          monInterestTriggers.forEach(trig => {
+          monInterestTriggers.forEach((trig) => {
             if (trig.monInterestId === interest.id) {
               if (itemData.trigger && trig.date < itemData.trigger) {
                 return;
@@ -242,7 +242,7 @@ const defaultZoom = 6;
             }
           }
 
-          obDates.forEach(date => {
+          obDates.forEach((date) => {
             if (date >= itemData.t0) {
               const hours = hoursBetweenTimestamps(date, lastDate);
               let totalHours = hours + hoursElapsed;
@@ -358,24 +358,24 @@ const defaultZoom = 6;
     if (monInterestTriggers && monInterests) {
       let items: ObsData[] = [];
       const services: string[] = [];
-      monInterestTriggers.forEach(trig => {
+      monInterestTriggers.forEach((trig) => {
         const serv = trig.serviceId;
         if (!services.includes(serv) && serv !== undefined) {
           services.push(serv);
         }
       });
-      monInterests.forEach(interest => {
+      monInterests.forEach((interest) => {
         const serv = interest.serviceId;
         if (!services.includes(serv) && serv !== undefined) {
           services.push(serv);
         }
       });
       Promise.all(
-        services.map(item => {
+        services.map((item) => {
           return getObservationData(item);
         }),
-      ).then(data => {
-        data.forEach(el => {
+      ).then((data) => {
+        data.forEach((el) => {
           items = items.concat(el);
         });
         items.sort((a: any, b: any) => {
