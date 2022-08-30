@@ -25,6 +25,7 @@ import {
 } from '../utils/helpers';
 import ObservationPoint from './ObservationPoint';
 import Loading from './Loading';
+import { StateContext } from '../components/State';
 
 async function getLakes() {
   const data = await import(
@@ -33,10 +34,8 @@ async function getLakes() {
   return data;
 }
 
-const SeurantaMap: React.FC<any> = (props: {
-  openModal: any;
-  hidden: boolean;
-}) => {
+  const { handleModalClick, loading, setLoading }: any =
+    useContext(StateContext);
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
   const [obsPoints, setObsPoints] = useState<any>(null);
   const [monInterestDefs, setMonInterestDefs] = useState<any>(null);
