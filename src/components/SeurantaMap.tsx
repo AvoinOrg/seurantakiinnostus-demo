@@ -43,14 +43,18 @@ const getLakes = async () => {
 
 const defaultPosition: any = [65.449704, 26.839269];
 const defaultZoom = 6;
+
+const SeurantaMap: React.FC<any> = () => {
   const map = useMap();
   const mapEvents = useMapEvents({
     zoomend: () => {
       setZoom(mapEvents.getZoom());
     },
   });
+
   const { handleModalClick, loading, setLoading }: any =
     useContext(StateContext);
+
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
   const [obsPoints, setObsPoints] = useState<any>(null);
   const [monInterestDefs, setMonInterestDefs] = useState<any>(null);
