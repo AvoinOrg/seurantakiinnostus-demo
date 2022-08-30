@@ -416,6 +416,31 @@ const SeurantaMap: React.FC<any> = () => {
       }
     }
   }, [zoom]);
+  useEffect(() => {
+    if (map) {
+      var mapboxUrl =
+        'https://gis.avoin.org/geoserver/gwc/service/tms/1.0.0/external%3Alakes@EPSG%3A900913@png/{z}/{x}/{y}.pbf';
+
+      var mapboxVectorTileOptions = {
+        minZoom: 11,
+        tms: true,
+        // attribution:
+        //   '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://www.mapbox.com/about/maps/">MapBox</a>',
+        vectorTileLayerStyles: {
+          color: 'blue',
+          strokeColor: 'blue',
+        },
+      };
+
+      //@ts-ignore
+      var mapboxPbfLayer = L.vectorGrid.protobuf(
+        mapboxUrl,
+        mapboxVectorTileOptions,
+      );
+
+      map.addLayer(mapboxPbfLayer);
+    }
+  }, [map]);
   return (
     <>
       <TileLayer
