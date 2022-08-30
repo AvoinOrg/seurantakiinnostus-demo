@@ -1,6 +1,15 @@
 import React, { lazy, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Map, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
+import {
+  useMap,
+  useMapEvents,
+  Marker,
+  Popup,
+  TileLayer,
+  WMSTileLayer,
+  GeoJSON,
+  MapContainer,
+} from 'react-leaflet';
 
 import { Theme } from '../styles';
 import {
@@ -32,6 +41,7 @@ const getLakes = async () => {
   return data;
 };
 
+  const map = useMap();
   const { handleModalClick, loading, setLoading }: any =
     useContext(StateContext);
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
@@ -49,9 +59,9 @@ const getLakes = async () => {
   const [zoom, setZoom] = useState<number>(6);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(pos => {
+    navigator.geolocation.getCurrentPosition((pos) => {
       setPosition([pos.coords.latitude, pos.coords.longitude]);
-      setZoom(15);
+      setZoom(12);
     });
 
     getLakes().then((component: any) => {
@@ -61,14 +71,14 @@ const getLakes = async () => {
     getObservationPoints().then(setObsPoints);
     getMonitoringInterestDefs().then(setMonInterestDefs);
     getMonitoringInterests().then(setMonInterests);
-    getMonitoringInterestTriggers().then(arr => {
+    getMonitoringInterestTriggers().then((arr) => {
       setMonInterestTriggers(
         arr.sort((a: any, b: any) => {
           return b.date - a.date;
         }),
       );
     });
-  }, []);
+  }, [map]);
 
   useEffect(() => {
     if (
