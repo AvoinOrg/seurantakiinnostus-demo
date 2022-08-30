@@ -406,7 +406,10 @@ const SeurantaMap: React.FC<any> = () => {
       <LegendContainer>
         <LegendImg />
       </LegendContainer>
-        </MapContainer>
+      {loading && (
+        <LoadingContainer>
+          <Loading />
+        </LoadingContainer>
       )}
     </div>
   );
