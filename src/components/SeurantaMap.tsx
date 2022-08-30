@@ -419,6 +419,7 @@ const SeurantaMap: React.FC<any> = () => {
       }
     }
   }, [zoom]);
+
   useEffect(() => {
     if (map) {
       var mapboxUrl =
@@ -481,17 +482,9 @@ const SeurantaMap: React.FC<any> = () => {
           <Loading />
         </LoadingContainer>
       )}
-    </div>
+    </>
   );
 };
-
-const MapContainer: any = styled(Map)`
-  display: flex;
-  flex: 1;
-  background: ${Theme.color.primary};
-  font-family: ${Theme.font.secondary};
-  background: white;
-`;
 
 const LegendContainer: any = styled.div`
   position: fixed;
