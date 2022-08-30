@@ -391,33 +391,21 @@ const SeurantaMap: React.FC<any> = () => {
   }, [monInterestTriggers, monInterests]);
 
   return (
-    <div style={{ display: props.hidden ? 'none' : 'flex', flex: 1 }}>
-      {loading ? (
-        <Loading />
-      ) : (
-        <MapContainer center={position} zoom={zoom}>
-          <TileLayer
-            url="http://tiles.kartat.kapsi.fi/taustakartta/{z}/{x}/{y}.png"
-            attribution='&copy; Karttamateriaali <a href="http://www.maanmittauslaitos.fi/avoindata">Maanmittauslaitos</a>'
-          />
-          {obsPointItems.map(item => (
-            <ObservationPoint
-              key={item.id}
-              ob={item}
-              openModal={props.openModal}
-            />
-          ))}
-          <GeoJSON
-            data={lakes}
-            style={{
-              color: 'blue',
-              weight: 5,
-              opacity: 0.65,
-            }}
-          />
-          <LegendContainer>
-            <LegendImg />
-          </LegendContainer>
+    <>
+      <TileLayer
+        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+      {obsPointItems.map((item) => (
+        <ObservationPoint
+          key={item.id}
+          ob={item}
+          openModal={handleModalClick}
+        />
+      ))}
+      <LegendContainer>
+        <LegendImg />
+      </LegendContainer>
         </MapContainer>
       )}
     </div>
