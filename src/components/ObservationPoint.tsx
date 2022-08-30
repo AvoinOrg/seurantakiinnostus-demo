@@ -24,7 +24,7 @@ const LEVEL_OF_NEED = [
 const ObservationPoint: React.FC<Props> = (props: Props) => {
   const [renderSettings, setRenderSettings] = useState<any>(null);
   const [drawIndicator, setDrawIndicator] = useState<boolean>(false);
-  const position: number[] = [props.ob.lat, props.ob.long];
+  const position: any = [props.ob.lat, props.ob.long];
 
   useEffect(() => {
     let color: string;
@@ -57,7 +57,6 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
         settings.icon = L.divIcon({
           className: 'pin',
           iconAnchor: [size / 2, size - 9],
-          labelAnchor: [-6, 0],
           popupAnchor: [0, (size - 20) * -1],
           html: `<svg xmlns="http://www.w3.org/2000/svg" 
             width="${size}" 
@@ -79,7 +78,6 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
         settings.icon = L.divIcon({
           className: 'pin',
           iconAnchor: [size / 2, size / 2],
-          labelAnchor: [0, 0],
           popupAnchor: [0, -10],
           html: `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" width="24" height="24"><defs><path d="M24 12C24 5.38 18.62 0 12 0C5.38 0 0 5.38 0 12C0 18.62 5.38 24 12 24C18.62 24 24 18.62 24 12Z" id="aRBYmkoLF"></path><clipPath id="clipc3FZk9oi4y"><use xlink:href="#aRBYmkoLF" opacity="1"></use></clipPath></defs><g><g><g><use xlink:href="#aRBYmkoLF" 
             opacity="1" 
@@ -101,7 +99,6 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
       settings.icon = L.divIcon({
         className: 'pin',
         iconAnchor: [size / 2, size / 2],
-        labelAnchor: [0, 0],
         popupAnchor: [0, -10],
         html: `<svg xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 512 512"
