@@ -1,43 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { MapContainer } from 'react-leaflet';
 
+import { StateContext } from '../components/State';
 import { Theme } from '../styles';
-import SeurantaMap from './SeurantaMap';
 import Loading from './Loading';
+import SeurantaMap from './SeurantaMap';
 
 declare const API_KEY: string;
+
+const defaultPosition: any = [65.449704, 26.839269];
+const defaultZoom = 6;
 
 type Props = {};
 
 const Main: React.FC<Props> = ({}) => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalService, setModalService] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleClick = (serviceId: string) => {
-    if (serviceId === modalService) {
-    } else {
-      setModalService(serviceId);
-    }
-    setLoading(true);
-    setModalOpen(true);
-
-    // fetch and run the citobsdb widget script
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    document.getElementsByTagName('head')[0].appendChild(script);
-    script.src = 'https://www.jarviwiki.fi/common/citobsembed.js';
-
-    const timer = setInterval(() => {
-      const divs: HTMLCollectionOf<Element> = document.getElementsByClassName(
-        'CitObsO311Widget',
-      );
-      if (divs.length > 0 && divs[0].children.length > 0) {
-        clearInterval(timer);
-        setLoading(false);
-      }
-    }, 100);
-  };
+  const { modalOpen, setModalOpen, modalService, loading }: any =
+    useContext(StateContext);
 
   return (
     <Container>
@@ -62,10 +41,11 @@ const Main: React.FC<Props> = ({}) => {
           </ModalContainer>
         )}
       </div>
-      <SeurantaMap
-        hidden={modalOpen}
-        openModal={(serviceId: string) => handleClick(serviceId)}
-      />
+      <div style={{ display: modalOpen ? 'none' : 'flex', flex: 1 }}>
+        <MapContainerStyled zoom={defaultZoom} center={defaultPosition}>
+          <SeurantaMap></SeurantaMap>
+        </MapContainerStyled>
+      </div>
     </Container>
   );
 };
@@ -74,6 +54,14 @@ const Container: any = styled.div`
   display: flex;
   flex: 1;
   background-color: ${Theme.color.primary};
+`;
+
+const MapContainerStyled: any = styled(MapContainer)`
+  display: flex;
+  flex: 1;
+  background: ${Theme.color.primary};
+  font-family: ${Theme.font.secondary};
+  background: white;
 `;
 
 const ModalContainer: any = styled.div`
