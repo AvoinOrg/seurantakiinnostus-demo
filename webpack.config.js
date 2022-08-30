@@ -41,14 +41,7 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|gif|png|svg|ttf|woff2?)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-            },
-          },
-        ],
+        type: 'asset/inline',
       },
     ],
   },
