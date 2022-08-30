@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   useMap,
@@ -10,6 +10,8 @@ import {
   GeoJSON,
   MapContainer,
 } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet.vectorgrid';
 
 import { Theme } from '../styles';
 import {
@@ -62,6 +64,7 @@ const SeurantaMap: React.FC<any> = () => {
   const [monInterestTriggers, setMonInterestTriggers] = useState<any>(null);
   const [obs, setObs] = useState<any>(null);
   const [lakes, setLakes] = useState<any>(null);
+  const [lakesLayer, setLakesLayer] = useState<any>(null);
   const [position, setPosition] = useState<any>(defaultPosition);
   const [zoom, setZoom] = useState<number>(defaultZoom);
 
@@ -441,6 +444,22 @@ const SeurantaMap: React.FC<any> = () => {
       map.addLayer(mapboxPbfLayer);
     }
   }, [map]);
+
+  useEffect(() => {
+    if (lakes && map) {
+      const lakesLayer = L.geoJSON(lakes, {
+        style: {
+          color: 'blue',
+          weight: 5,
+          opacity: 0.65,
+        },
+      });
+
+      setLakesLayer(lakesLayer);
+      map.addLayer(lakesLayer);
+    }
+  }, [lakes, map]);
+
   return (
     <>
       <TileLayer
