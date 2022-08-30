@@ -41,7 +41,14 @@ const getLakes = async () => {
   return data;
 };
 
+const defaultPosition: any = [65.449704, 26.839269];
+const defaultZoom = 6;
   const map = useMap();
+  const mapEvents = useMapEvents({
+    zoomend: () => {
+      setZoom(mapEvents.getZoom());
+    },
+  });
   const { handleModalClick, loading, setLoading }: any =
     useContext(StateContext);
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
@@ -51,12 +58,8 @@ const getLakes = async () => {
   const [monInterestTriggers, setMonInterestTriggers] = useState<any>(null);
   const [obs, setObs] = useState<any>(null);
   const [lakes, setLakes] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [position, setPosition] = useState<number[] | null>([
-    65.449704,
-    26.839269,
-  ]);
-  const [zoom, setZoom] = useState<number>(6);
+  const [position, setPosition] = useState<any>(defaultPosition);
+  const [zoom, setZoom] = useState<number>(defaultZoom);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
