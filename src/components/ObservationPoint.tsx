@@ -178,7 +178,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               <hr style={{ margin: '15px 0 15px 0' }} />
               {props.ob.serviceId != null && (
                 <Field>
-                  <b>Ilmoituspalvelu:</b>
+                  <b>Kuvaus:</b>
                   {'  ' + props.ob.serviceId}
                 </Field>
               )}
