@@ -2,9 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
 import { Marker, Popup, Circle, GeoJSON } from 'react-leaflet';
+import CitobserList from './CitobsersList';
 
 import { Theme } from '../styles';
 import { tsToString } from '../utils/helpers';
+
+const dummyCitobsers = [
+    '73452',
+    'This observation was saved on 2022-09-02T07:36:32.489Z using the SYKE CitObs Open311 Widget. #_citobswidget #api46 #PRL19 #citobsoper #_KuntaNimi_Porvoo #_Jako3Tunnus_Porvoonjoen suualue',
+];
 
 interface Props {
   ob: any;
@@ -175,10 +181,16 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               {props.ob.serviceId && (
                 <Button onClick={handleClick}>Lisää havainto</Button>
               )}
-              <hr style={{ margin: '15px 0 15px 0' }} />
+              <hr style={{ margin: '15px 0 15px 0' }} /> 
               {props.ob.serviceId != null && (
                 <Field>
                   <b>Kuvaus:</b>
+                  {'  ' + dummyCitobsers[1] }
+                </Field>
+              )}          
+              {props.ob.serviceId != null && (
+                <Field>
+                  <b>Ilmoituspalvelu:</b>
                   {'  ' + props.ob.serviceId}
                 </Field>
               )}
