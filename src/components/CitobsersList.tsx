@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Citobser from './Citobser';
+import Citobsers from './Citobsers';
 
 const CitobsersList = (props) => {
   return (
     <ul>
-      {props.citobsers.map((citobser) => (
-        <Citobser
-          service_request_id={citobser.description}
-          description={citobser.description}          
+      {props.datas.map((data) => (
+        <Citobsers
+          service_code={data.service_code}
+          description={data.description}          
         />
       ))}
     </ul>

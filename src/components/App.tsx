@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { ThemeProvider } from 'styled-components';
 import CitobserList from './CitobsersList';
 
@@ -6,34 +6,38 @@ import { Theme, GlobalStyle } from '../styles';
 import { StateProvider } from '../components/State';
 import Main from './Main';
 
-const App: React.FC<{}> = ({}) => {
-  
-  const [citobsers, setCitobservs] = useState();
-
-  function citizenObservationHandler() {
-    fetch('https://rajapinnat.ymparisto.fi/api/kansalaishavainnot/1.0/services.json')
-      .then(response => {
+function App() {
+  const [data,setData]=useState([]);   
+  const getData=()=>{
+    fetch('https://rajapinnat.ymparisto.fi/api/kansalaishavainnot/1.0/services.json'
+    ,{
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+       }
+    }
+    )
+      .then(function(response){
+        console.log(response)
         return response.json();
       })
-      .then(data => {
-        const transformedCitobsers = data.map((citizenData) => {
-          return {
-            extension: citizenData.extension = true,
-            service_code: citizenData.service_code = 'api_privileges_general_service_code_en_202206071516241',
-            description: citizenData.description
-          };  
+      .then(function(datas) {
+        console.log(datas);
+        setData(datas)
       });
-      setCitobservs(transformedCitobsers);
-    });
   }
+  useEffect(()=>{
+    getData()
+  },[])
+
   return (
     <ThemeProvider theme={Theme}>
       <GlobalStyle />
-      <StateProvider>
-        <Main></Main>
-      </StateProvider>
-    </ThemeProvider>   
+        <StateProvider>
+          <Main></Main>
+        </StateProvider>
+    </ThemeProvider>
   );
-};
+}
 
 export default App;

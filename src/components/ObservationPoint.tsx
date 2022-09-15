@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
 import { Marker, Popup, Circle, GeoJSON } from 'react-leaflet';
-import CitobserList from './CitobsersList';
+import Citobsers from './Citobsers';
 
 import { Theme } from '../styles';
 import { tsToString } from '../utils/helpers';
@@ -185,7 +185,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               {props.ob.serviceId != null && (
                 <Field>
                   <b>Kuvaus:</b>
-                  {'  ' + dummyCitobsers[1] }
+                  <Citobsers />             
                 </Field>
               )}          
               {props.ob.serviceId != null && (
