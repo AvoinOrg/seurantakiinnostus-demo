@@ -6,6 +6,7 @@ import { Theme, GlobalStyle } from '../styles';
 import { StateProvider } from '../components/State';
 import Main from './Main';
 
+
 function App() {
   const [data,setData]=useState([]);   
   const getData=()=>{

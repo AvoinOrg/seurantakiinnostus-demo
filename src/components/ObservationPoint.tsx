@@ -12,6 +12,22 @@ const dummyCitobsers = [
     'This observation was saved on 2022-09-02T07:36:32.489Z using the SYKE CitObs Open311 Widget. #_citobswidget #api46 #PRL19 #citobsoper #_KuntaNimi_Porvoo #_Jako3Tunnus_Porvoonjoen suualue',
 ];
 
+const url = 'https://rajapinnat.ymparisto.fi/api/kansalaishavainnot/1.0/services.json';
+
+const datatest = {  
+    // service_code: 'api_privileges_general_service_code_en_202206071516241',
+   service_request_id:67062
+  }
+
+const fetchData = {
+//   method: 'POST',
+   body: JSON.stringify(datatest),
+   headers: new Headers({
+     'Content-Type': 'application/json',
+     'Accept': 'application/json'
+    })
+}
+
 interface Props {
   ob: any;
   openModal: any;
@@ -184,8 +200,16 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               <hr style={{ margin: '15px 0 15px 0' }} /> 
               {props.ob.serviceId != null && (
                 <Field>
-                  <b>Kuvaus:</b>
-                  <Citobsers />             
+                  <b>Kuvaus:</b>                         
+                  {'  ' + 
+                  fetch(url, fetchData)
+                  .then(function() {
+                    // Handle response you get from the API
+                    console.log('hello')
+                    
+                  })                  
+                  }
+                  {'  ' + dummyCitobsers[1]}
                 </Field>
               )}          
               {props.ob.serviceId != null && (
