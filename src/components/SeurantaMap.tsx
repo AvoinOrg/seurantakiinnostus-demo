@@ -37,6 +37,7 @@ import {
 import ObservationPoint from './ObservationPoint';
 import Loading from './Loading';
 import { StateContext } from '../components/State';
+import ControlPanel from './ControlPanel';
 
 const getLakes = async () => {
   const data = await import('../data/lakes.json');
@@ -54,7 +55,7 @@ const SeurantaMap: React.FC<any> = () => {
     },
   });
 
-  const { handleModalClick, loading, setLoading }: any =
+  const { handleModalClick, loading, setLoading, controlUiEnabled }: any =
     useContext(StateContext);
 
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
@@ -477,6 +478,7 @@ const SeurantaMap: React.FC<any> = () => {
       <LegendContainer>
         <LegendImg />
       </LegendContainer>
+      {controlUiEnabled && <ControlPanel></ControlPanel>}
       {loading && (
         <LoadingContainer>
           <Loading />
@@ -492,7 +494,7 @@ const LegendContainer: any = styled.div`
   left: 10px;
   display: flex;
   flex: 1;
-  z-index: 999;
+  z-index: 1000;
 `;
 
 const LegendImg: any = styled.img.attrs({
