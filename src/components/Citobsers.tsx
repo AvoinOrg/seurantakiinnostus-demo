@@ -2,9 +2,8 @@ import React from 'react';
 
 const Citobsers = (props) => {
     return (
-        <li>
+        <li className="cito-list2">
             <p>{props.service_code}</p><br/>
-            <p>{props.description}</p>
         </li>
     )
 }

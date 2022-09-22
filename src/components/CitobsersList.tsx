@@ -1,15 +1,17 @@
 import React from 'react';
 
 import Citobsers from './Citobsers';
+import './Citobsers.css';
 
 const CitobsersList = (props) => {
   return (
-    <ul>
-      {props.datas.map((data) => (
+    <ul className="cito-list">      
+      {props.items.map(data => (
         <Citobsers
-          service_code={data.service_code}
-          description={data.description}          
-        />
+          service_code={data.service_code}          
+        >
+          {data.description}
+        </Citobsers>
       ))}
     </ul>
   );

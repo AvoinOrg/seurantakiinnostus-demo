@@ -2,31 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
 import { Marker, Popup, Circle, GeoJSON } from 'react-leaflet';
-import Citobsers from './Citobsers';
+// import Citobsers from './Citobsers';
+// import CitobsersList from './CitobsersList';
+import Citobsersdesc from './Citobsersdesc';
 
 import { Theme } from '../styles';
 import { tsToString } from '../utils/helpers';
-
-const dummyCitobsers = [
-    '73452',
-    'This observation was saved on 2022-09-02T07:36:32.489Z using the SYKE CitObs Open311 Widget. #_citobswidget #api46 #PRL19 #citobsoper #_KuntaNimi_Porvoo #_Jako3Tunnus_Porvoonjoen suualue',
-];
-
-const url = 'https://rajapinnat.ymparisto.fi/api/kansalaishavainnot/1.0/services.json';
-
-const datatest = {  
-    // service_code: 'api_privileges_general_service_code_en_202206071516241',
-   service_request_id:67062
-  }
-
-const fetchData = {
-//   method: 'POST',
-   body: JSON.stringify(datatest),
-   headers: new Headers({
-     'Content-Type': 'application/json',
-     'Accept': 'application/json'
-    })
-}
 
 interface Props {
   ob: any;
@@ -201,15 +182,17 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               {props.ob.serviceId != null && (
                 <Field>
                   <b>Kuvaus:</b>                         
-                  {'  ' + 
+                  {/* {'  ' + 
                   fetch(url, fetchData)
                   .then(function() {
                     // Handle response you get from the API
                     console.log('hello')
                     
                   })                  
-                  }
-                  {'  ' + dummyCitobsers[1]}
+                  } */}
+                  <span>
+                    <Citobsersdesc />  
+                  </span>                                  
                 </Field>
               )}          
               {props.ob.serviceId != null && (

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { ThemeProvider } from 'styled-components';
-import CitobserList from './CitobsersList';
 
 import { Theme, GlobalStyle } from '../styles';
 import { StateProvider } from '../components/State';

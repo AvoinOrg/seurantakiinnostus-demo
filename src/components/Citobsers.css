@@ -1,0 +1,16 @@
+.cito-list {
+    list-style: none;
+    margin: 1em;
+    padding: 1em;
+    border-radius: 25% 10%;
+  }
+
+.cito-list2 {
+  list-style: none;
+  margin: 1em;
+  padding: 1em;
+  border-radius: 25% 10%;
+  border-color: black;
+}
+
+ 
