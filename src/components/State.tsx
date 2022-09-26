@@ -12,12 +12,13 @@ export const StateProvider = (props) => {
   const [widgetLoading, setWidgetLoading] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const [controlUiEnabled, setControlUiEnabled] = useState<boolean>(false);
+  const [widget, setWidget] = useState<any>(null);
   const location = useLocation();
   const queryClient = useQueryClient();
 
-  const [priority, setPriority] = useState<string>('');
-  const [apiKey, setApiKey] = useState<string>('');
-  const [apiId, setApiId] = useState<string>('');
+  const [paramPriority, setParamPriority] = useState<string>('');
+  const [paramApiKey, setParamApiKey] = useState<string>('');
+  const [paramApiId, setParamApiId] = useState<string>('');
 
   // Queries
   // const query = useQuery('todos', getTodos);
@@ -34,22 +35,23 @@ export const StateProvider = (props) => {
     for (const entry of searchParams.entries()) {
       const [param, value] = entry;
       if (param === 'editorApiId') {
-        setApiId(value);
+        setParamApiId(value);
       }
       if (param === 'apiKey') {
-        setApiKey(value);
+        setParamApiKey(value);
       }
       if (param === 'priority') {
-        setPriority(value);
+        setParamPriority(value);
       }
     }
   }, [searchParams]);
 
-  const handleModalClick = (serviceId: string) => {
+  const handleModalClick = (serviceId: string, widget: any) => {
     if (serviceId === modalService) {
     } else {
       setModalService(serviceId);
     }
+    setWidget(widget);
     setWidgetLoading(true);
     setModalOpen(true);
 
@@ -59,6 +61,7 @@ export const StateProvider = (props) => {
     document.getElementsByTagName('head')[0].appendChild(script);
     script.src = 'https://www.jarviwiki.fi/common/citobsembed.js';
 
+    // a timer to prevent a loading bug
     const timer = setInterval(() => {
       const divs: HTMLCollectionOf<Element> =
         document.getElementsByClassName('CitObsO311Widget');
@@ -77,12 +80,14 @@ export const StateProvider = (props) => {
     loading,
     setLoading,
     widgetLoading,
+    widget,
+    setWidget,
     setWidgetLoading,
     handleModalClick,
     controlUiEnabled,
-    apiKey,
-    apiId,
-    priority,
+    paramApiKey,
+    paramApiId,
+    paramPriority,
   };
 
   return (
