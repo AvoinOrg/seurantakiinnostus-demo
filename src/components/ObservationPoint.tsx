@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
 import { Marker, Popup, Circle, GeoJSON } from 'react-leaflet';
 
 import { Theme } from '../styles';
 import { tsToString } from '../utils/helpers';
+import { StateContext } from '../components/State';
+import monWidget from '../utils/widgets/monWidget';
+import saveWidget from '../utils/widgets/saveWidget';
 
 interface Props {
   ob: any;
-  openModal: any;
 }
 
 const NO_COLOR = 'gray';
@@ -24,6 +26,8 @@ const LEVEL_OF_NEED = [
 const ObservationPoint: React.FC<Props> = (props: Props) => {
   const [renderSettings, setRenderSettings] = useState<any>(null);
   const [drawIndicator, setDrawIndicator] = useState<boolean>(false);
+
+  const { handleModalClick, apiKey }: any = useContext(StateContext);
   const position: any = [props.ob.lat, props.ob.long];
 
   useEffect(() => {
@@ -116,8 +120,14 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
     setRenderSettings(settings);
   }, []);
 
-  const handleClick = () => {
-    props.openModal(props.ob.serviceId);
+  const handleMonClick = () => {
+    const newWidget = monWidget(props.ob.serviceId, apiKey);
+    handleModalClick(props.ob.serviceId, newWidget);
+  };
+
+  const handleSaveClick = () => {
+    const newWidget = saveWidget(apiKey, 12, 13);
+    handleModalClick(props.ob.serviceId, newWidget);
   };
 
   const handlePopupOpen = () => {
@@ -173,7 +183,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
                 </>
               )}
               {props.ob.serviceId && (
-                <Button onClick={handleClick}>Lisää havainto</Button>
+                <Button onClick={handleMonClick}>Lisää havainto</Button>
               )}
               <hr style={{ margin: '15px 0 15px 0' }} />
               {props.ob.serviceId != null && (
@@ -249,6 +259,11 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
                       }
                     })()}
                 </Field>
+              )}
+              {props.ob.serviceId && (
+                <Button onClick={handleSaveClick}>
+                  Save monitoring interest status
+                </Button>
               )}
             </Tooltip>
           </Point>
