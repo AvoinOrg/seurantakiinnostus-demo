@@ -343,6 +343,7 @@
               pointRadius: 6,
               obsesCluster: 'false',
               allowImages: 0,
+              defaultVals: {},
               mapCenterLatLon: null,
             };
 
@@ -453,6 +454,14 @@
                   } else if (an.indexOf('data-annotate-location') == 0) {
                     try {
                       opts.annotate = JSON.parse(av.split("'").join('"'));
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  } else if (an.indexOf('data-default-values') == 0) {
+                    try {
+                      opts.defaultVals = JSON.parse(av.split("'").join('"'));
+                      // to remove
+                      console.log(opts.defaultVals);
                     } catch (err) {
                       console.log(err);
                     }
