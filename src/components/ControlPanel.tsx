@@ -5,19 +5,19 @@ import { Theme } from '../styles';
 import { StateContext } from '../components/State';
 
 function ControlPanel(): React.ReactElement {
-  const { priority, apiId }: any = useContext(StateContext);
+  const { paramPriority, paramApiId }: any = useContext(StateContext);
 
   return (
     <Container>
       <InfoContainer>
         <InfoRow>
-          System API-ID:&nbsp;<b>{apiId}</b>
+          System API-ID:&nbsp;<b>{paramApiId}</b>
         </InfoRow>
         <InfoRow>
-          Priority:&nbsp;<b>{priority}</b>
+          Priority:&nbsp;<b>{paramPriority}</b>
         </InfoRow>
       </InfoContainer>
-      <Button>Import</Button>
+      {/* <Button>Import</Button> */}
     </Container>
   );
 }
