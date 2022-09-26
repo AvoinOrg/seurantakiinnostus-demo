@@ -31,7 +31,7 @@ export const getObservationPoints = (): Promise<ObsPointData[]> => {
       }));
       return items;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       return [];
     });
@@ -60,7 +60,7 @@ export const getMonitoringInterests = (): Promise<MonInterestData[]> => {
       }));
       return items;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       return [];
     });
@@ -195,13 +195,15 @@ export const getMonitoringInterestDefs = (): Promise<MonInterestDefData[]> => {
       }));
       return items;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       return [];
     });
 };
 
-export const getMonitoringInterestTriggers = (): Promise<MonInterestTriggerData[]> => {
+export const getMonitoringInterestTriggers = (): Promise<
+  MonInterestTriggerData[]
+> => {
   return axios
     .get(ENTRYPOINT, {
       params: {
@@ -275,7 +277,7 @@ export const getMonitoringInterestTriggers = (): Promise<MonInterestTriggerData[
       }));
       return items;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       return [];
     });
@@ -299,7 +301,7 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
       }));
       return obs;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       return [];
     });
@@ -316,7 +318,7 @@ const phaseValues = {
 const getPhaseSkips = (val: number): string[] => {
   const phases: string[] = [];
 
-  Object.keys(phaseValues).forEach(key => {
+  Object.keys(phaseValues).forEach((key) => {
     if (val >= phaseValues[key]) {
       phases.unshift(key);
       val -= phaseValues[key];
