@@ -18,11 +18,9 @@ function App() {
     }
     )
       .then(function(response){
-        console.log(response)
         return response.json();
       })
       .then(function(datas) {
-        console.log(datas);
         setData(datas)
       });
   }
@@ -36,7 +34,7 @@ function App() {
         <StateProvider>
           <Main></Main>
         </StateProvider>
-    </ThemeProvider>
+    </ThemeProvider>     
   );
 }
 

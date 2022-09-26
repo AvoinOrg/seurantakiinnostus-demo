@@ -30,11 +30,9 @@ function Citobsersdesc() {
       }
       )
         .then(function(response){
-          console.log(response)
           return response.json();
         })
-        .then(function(myJson) {
-          console.log(myJson);
+        .then(function(myJson) {          
           setData(myJson)
         });
     }
@@ -42,7 +40,7 @@ function Citobsersdesc() {
       getData()
     },[])
     return (
-      <div className="cito-list">
+      <span className="cito-list">
        {/* {
         data.map((dat, index) => {
          return (
@@ -52,7 +50,7 @@ function Citobsersdesc() {
           );
         })} */}
         {dummyCitobsers[1]}       
-      </div>
+      </span>
     );  
 }
 
