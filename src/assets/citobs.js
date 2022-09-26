@@ -790,6 +790,13 @@
           api = proto + '//testbed.ymparisto.fi/Open311';
         }
 
+        function getDefaultValueString(code) {
+          if (opts.defaultVals && opts.defaultVals[code]) {
+            return 'value="' + opts.defaultVals[code] + '" ';
+          }
+          return '';
+        }
+
         jQuery.ajax({
           type: 'GET',
           url: api + '/services/' + code + '.json?extension=true',
@@ -872,6 +879,7 @@
               for (var a in req.attributesA) {
                 var attr = req.attributesA[a];
                 var id = 'citobso311_input_' + code + '_' + attr.code;
+                console.log(attr.code);
                 var valjQ = '';
 
                 var valueHelps = '';
@@ -942,6 +950,7 @@
                       '<input type="text" id="' +
                       id +
                       '" class="ui-widget ui-widget-content ui-corner-all" ' +
+                      getDefaultValueString(attr.code) +
                       reqStr +
                       '>';
                     valjQ = '#' + id;
@@ -973,6 +982,7 @@
                       '" id="' +
                       id +
                       '" class="ui-widget ui-widget-content ui-corner-all" ' +
+                      getDefaultValueString(attr.code) +
                       reqStr +
                       '>';
                     valjQ = '#' + id;
