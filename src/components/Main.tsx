@@ -7,15 +7,13 @@ import { Theme } from '../styles';
 import Loading from './Loading';
 import SeurantaMap from './SeurantaMap';
 
-declare const API_KEY: string;
-
 const defaultPosition: any = [65.449704, 26.839269];
 const defaultZoom = 6;
 
 type Props = {};
 
 const Main: React.FC<Props> = ({}) => {
-  const { modalOpen, setModalOpen, modalService, loading }: any =
+  const { modalOpen, setModalOpen, widget, loading }: any =
     useContext(StateContext);
 
   return (
@@ -26,11 +24,7 @@ const Main: React.FC<Props> = ({}) => {
             <ModalButton onClick={() => setModalOpen(false)}>X</ModalButton>
             <Widget
               dangerouslySetInnerHTML={{
-                __html: modalOpen ? (
-                  createWidgetBody(modalService)
-                ) : (
-                  <div></div>
-                ),
+                __html: modalOpen ? widget : <div></div>,
               }}
             />
             {loading && (
@@ -101,24 +95,5 @@ const LoadingContainer: any = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
-
-const createWidgetBody = (serviceId: string) => `
-  <div class="CitObsO311Widget"
-    data-type="SingleServiceQuestionnaire"
-    data-service_code="${serviceId}"
-    data-show-service_name="true"
-    data-show-service_description="true"
-    data-show-map="true"
-    data-map-height="300"
-    data-show-obses="true"
-    data-obses-max_age="90"
-    data-obses-radius="9"
-    data-obses-label=""
-    data-obses-color=""
-    data-obses-cluster="true"
-    data-show-questionnaire="true"
-    data-images-count="2"
-    data-api-key="${API_KEY}"
-  ></div>`;
 
 export default Main;
