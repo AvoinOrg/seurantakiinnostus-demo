@@ -15,13 +15,8 @@
     "jsx": "react",
     "baseUrl": ".",
     "types": ["react", "node"],
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*", "public/citobs.js"],
+  "exclude": ["node_modules", "dist"]
 }
