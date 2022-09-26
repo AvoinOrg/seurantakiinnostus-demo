@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 
+declare const API_KEY: string;
+
 export const StateContext = createContext({});
 
 export const StateProvider = (props) => {
@@ -19,6 +21,7 @@ export const StateProvider = (props) => {
   const [paramPriority, setParamPriority] = useState<string>('');
   const [paramApiKey, setParamApiKey] = useState<string>('');
   const [paramApiId, setParamApiId] = useState<string>('');
+  const [apiKey, setApiKey] = useState<string>(API_KEY);
 
   // Queries
   // const query = useQuery('todos', getTodos);
@@ -34,11 +37,12 @@ export const StateProvider = (props) => {
   useEffect(() => {
     for (const entry of searchParams.entries()) {
       const [param, value] = entry;
-      if (param === 'editorApiId') {
+      if (param === 'apiId') {
         setParamApiId(value);
       }
       if (param === 'apiKey') {
         setParamApiKey(value);
+        setApiKey(value);
       }
       if (param === 'priority') {
         setParamPriority(value);
@@ -59,7 +63,7 @@ export const StateProvider = (props) => {
     const script = document.createElement('script');
     script.type = 'text/javascript';
     document.getElementsByTagName('head')[0].appendChild(script);
-    script.src = 'https://www.jarviwiki.fi/common/citobsembed.js';
+    script.src = require('../assets/citobs.js');
 
     // a timer to prevent a loading bug
     const timer = setInterval(() => {
@@ -88,6 +92,7 @@ export const StateProvider = (props) => {
     paramApiKey,
     paramApiId,
     paramPriority,
+    apiKey,
   };
 
   return (
