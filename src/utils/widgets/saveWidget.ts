@@ -1,5 +1,9 @@
-const saveWidget = (apiKey, long, lat) => `
-  <div class="CitObsO311Widget"
+const saveWidget = (apiKey, defaultValues, latLon) => {
+  const latLonJson = JSON.stringify(latLon);
+  const defaultValuesJson = JSON.stringify(defaultValues);
+
+  return `
+    <div class="CitObsO311Widget"
     data-type="SingleServiceQuestionnaire"
     data-service_code="csepin_intereststatus_service_code_en_202209161148489"
     data-show-service_name="true"
@@ -16,8 +20,9 @@ const saveWidget = (apiKey, long, lat) => `
     data-images-count="0"
     data-api-key=${apiKey}
     data-observation_tags="#csepin, #monitoringinterest, #taskscore, #intereststatus, #api26, #taskscorecontroluipublic"
-    data-long=${long}
-    data-lat=${lat}
+    data-map-center-lat-lon=${latLonJson}
+    data-default-values=${defaultValuesJson}
   ></div>`;
+};
 
 export default saveWidget;
