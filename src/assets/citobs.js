@@ -791,7 +791,7 @@
         }
 
         function getDefaultValueString(code) {
-          if (opts.defaultVals && opts.defaultVals[code]) {
+          if (opts.defaultVals && opts.defaultVals[code] != null) {
             return 'value="' + opts.defaultVals[code] + '" ';
           }
           return '';
