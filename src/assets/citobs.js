@@ -343,6 +343,7 @@
               pointRadius: 6,
               obsesCluster: 'false',
               allowImages: 0,
+              mapCenterLatLon: null,
             };
 
             //get attributes
@@ -452,6 +453,16 @@
                   } else if (an.indexOf('data-annotate-location') == 0) {
                     try {
                       opts.annotate = JSON.parse(av.split("'").join('"'));
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  } else if (an.indexOf('data-map-center-lat-lon') == 0) {
+                    try {
+                      opts.mapCenterLatLon = JSON.parse(
+                        av.split("'").join('"'),
+                      );
+                      // to remove
+                      console.log(opts.mapCenterLatLon);
                     } catch (err) {
                       console.log(err);
                     }
@@ -1459,11 +1470,19 @@
               });
 
               // do the base map with these settings
+              var lat = 65;
+              var lon = 25.5;
+
+              if (opts.mapCenterLatLon) {
+                lon = opts.mapCenterLatLon[0];
+                lon = opts.mapCenterLatLon[1];
+              }
+
               map = ol3_jwMakeMap({
                 container: 'citobso311_map_' + code,
                 base: 'mmlTausta',
-                lon: 25.5,
-                lat: 65,
+                lon: lon,
+                lat: lat,
                 zoom: 5,
                 layers: addLayers,
                 memo: memo,
