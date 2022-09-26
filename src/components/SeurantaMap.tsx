@@ -55,7 +55,7 @@ const SeurantaMap: React.FC<any> = () => {
     },
   });
 
-  const { handleModalClick, loading, setLoading, controlUiEnabled }: any =
+  const { loading, setLoading, controlUiEnabled }: any =
     useContext(StateContext);
 
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
@@ -469,11 +469,7 @@ const SeurantaMap: React.FC<any> = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       {obsPointItems.map((item) => (
-        <ObservationPoint
-          key={item.id}
-          ob={item}
-          openModal={handleModalClick}
-        />
+        <ObservationPoint key={item.id} ob={item} />
       ))}
       <LegendContainer>
         <LegendImg />
