@@ -126,7 +126,20 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveClick = () => {
-    const newWidget = saveWidget(apiKey, 12, 13);
+    console.log(props.ob);
+    const newWidget = saveWidget(
+      apiKey,
+      {
+        csepin_intereststatus_s_number_en_202209161148415: renderSettings.s,
+        csepin_intereststatus_P_number_202209161148417: renderSettings.p,
+        // csepin_intereststatus_reqscname_string_en_202209161148412:
+        //   renderSettings.code,
+        csepin_intereststatus_reqsc_string_en_202209161148414:
+          props.ob.serviceId,
+        csepin_intereststatus_siteid_string_en_202209161148418: props.ob.id,
+      },
+      [12.5, 15.55],
+    );
     handleModalClick(props.ob.serviceId, newWidget);
   };
 
