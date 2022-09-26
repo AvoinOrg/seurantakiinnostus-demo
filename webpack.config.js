@@ -38,7 +38,10 @@ module.exports = {
       {
         test: /\.(ts|js)x?$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        exclude: [
+          path.resolve(__dirname, 'node_modules'),
+          path.resolve(__dirname, 'src/assets'),
+        ],
       },
       {
         test: /\.css$/,
@@ -47,6 +50,11 @@ module.exports = {
       {
         test: /\.(jpe?g|gif|png|svg|ttf|woff2?)$/i,
         type: 'asset/inline',
+      },
+      {
+        test: /\.(js)$/,
+        type: 'asset/resource',
+        include: path.resolve(__dirname, 'src/assets'),
       },
     ],
   },
