@@ -53,6 +53,10 @@ export const getMonitoringInterests = async (): Promise<MonInterestData[]> => {
       : 0,
   }));
 
+  items.sort((a: any, b: any) => {
+    return b.date - a.date;
+  });
+
   return items;
 };
 
@@ -142,6 +146,10 @@ export const getMonitoringInterestDefs = async (): Promise<
         )
       : 0,
   }));
+
+  items.sort((a: any, b: any) => {
+    return b.date - a.date;
+  });
 
   return items;
 };
@@ -235,6 +243,7 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
         lat: Number(item.lat.replace(/,/, '.')),
         long: Number(item.long.replace(/,/, '.')),
       }));
+
       return obs;
     })
     .catch((error) => {
