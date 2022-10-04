@@ -1491,10 +1491,12 @@
               // do the base map with these settings
               var lat = 65;
               var lon = 25.5;
+              var zoom = 5;
 
-              if (opts.mapCenterLatLon) {
-                lon = opts.mapCenterLatLon[0];
+              if (opts.mapCenterLatLon != null) {
+                lat = opts.mapCenterLatLon[0];
                 lon = opts.mapCenterLatLon[1];
+                zoom = 16;
               }
 
               map = ol3_jwMakeMap({
@@ -1502,7 +1504,7 @@
                 base: 'mmlTausta',
                 lon: lon,
                 lat: lat,
-                zoom: 5,
+                zoom: zoom,
                 layers: addLayers,
                 memo: memo,
               });
@@ -1578,6 +1580,12 @@
                   }
                 },
               });
+
+              if (opts.mapCenterLatLon != null) {
+                memo.lockmeCtrl.setActive(true);
+								memo.dragPan.setActive(false);
+								memo.keyboardPan.setActive(false);
+              }
 
               if (opts.showQuestionnaire) {
                 targetCtrl = new ol.control.Target();
