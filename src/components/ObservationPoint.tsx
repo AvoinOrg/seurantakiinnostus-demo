@@ -126,7 +126,6 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveClick = () => {
-    console.log(props.ob);
     const newWidget = saveWidget(
       apiKey,
       {
