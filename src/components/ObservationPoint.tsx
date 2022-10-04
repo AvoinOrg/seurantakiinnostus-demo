@@ -138,7 +138,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
           props.ob.serviceId,
         csepin_intereststatus_siteid_string_en_202209161148418: props.ob.id,
       },
-      [12.5, 15.55],
+      position,
     );
     handleModalClick(props.ob.serviceId, newWidget);
   };
