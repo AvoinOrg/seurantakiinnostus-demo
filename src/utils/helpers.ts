@@ -78,3 +78,12 @@ export const tsToString = (ts: number): string => {
     d.getMinutes();
   return s;
 };
+
+export const sliceArrayAtValue = (arr: any[], val: any, key: any) => {
+  const index = arr.findIndex((item) => item[key] <= val);
+  if (index === -1) {
+    return [];
+  }
+
+  return arr.slice(index);
+};
