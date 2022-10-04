@@ -34,6 +34,7 @@ import {
   arrayToObject,
   hoursBetweenTimestamps,
   isInside,
+  sliceArrayAtValue,
 } from '../utils/helpers';
 import ObservationPoint from './ObservationPoint';
 import Loading from './Loading';
@@ -56,7 +57,7 @@ const SeurantaMap: React.FC<any> = () => {
     },
   });
 
-  const { loading, setLoading, controlUiEnabled }: any =
+  const { loading, setLoading, controlUiEnabled, selectedDate }: any =
     useContext(StateContext);
 
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
@@ -126,15 +127,37 @@ const SeurantaMap: React.FC<any> = () => {
       monInterestTriggers.data != null &&
       lakes
     ) {
-      console.log(obsPoints);
-      console.log(obs);
+      const dateLimit = selectedDate.valueOf();
+
+      const obsFiltered = sliceArrayAtValue(obs, selectedDate, 'date');
+      const obsPointsFiltered = sliceArrayAtValue(
+        obsPoints.data,
+        selectedDate,
+        'date',
+      );
+      const monInterestDefsFiltered = sliceArrayAtValue(
+        monInterestDefs.data,
+        selectedDate,
+        'date',
+      );
+      const monInterestsFiltered = sliceArrayAtValue(
+        monInterests.data,
+        selectedDate,
+        'date',
+      );
+      const monInterestTriggersFiltered = sliceArrayAtValue(
+        monInterestTriggers.data,
+        selectedDate,
+        'date',
+      );
+
       const items: any = [];
 
-      const points = arrayToObject(obsPoints.data.concat(obs), 'id');
+      const points = arrayToObject(obsPointsFiltered.concat(obsFiltered), 'id');
 
-      const defs = arrayToObject(monInterestDefs.data, 'id');
+      const defs = arrayToObject(monInterestDefsFiltered, 'id');
 
-      monInterests.data.forEach((interest) => {
+      monInterestsFiltered.forEach((interest) => {
         const itemData: any = {};
         itemData.id = interest.id;
         itemData.radius = interest.radius;
@@ -157,7 +180,7 @@ const SeurantaMap: React.FC<any> = () => {
 
           itemData.trigger = null;
 
-          monInterestTriggers.data.forEach((trig) => {
+          monInterestTriggersFiltered.forEach((trig) => {
             if (trig.monInterestId === interest.id) {
               if (itemData.trigger && trig.date < itemData.trigger) {
                 return;
@@ -216,8 +239,7 @@ const SeurantaMap: React.FC<any> = () => {
             }
           }
 
-          const now = Date.now();
-          const obDates: any[] = [now];
+          const obDates: any[] = [dateLimit];
 
           itemData.serviceId = interest.serviceId;
 
@@ -227,8 +249,8 @@ const SeurantaMap: React.FC<any> = () => {
               : interest.serviceId;
 
           if (serviceId != null && serviceId) {
-            for (let i = 0; i < obs.length; i++) {
-              const ob = obs[i];
+            for (let i = 0; i < obsFiltered.length; i++) {
+              const ob = obsFiltered[i];
               if (itemData.t0 < ob.date) {
                 if (ob.serviceId === serviceId && ob.id !== firstObsId) {
                   if (
@@ -287,7 +309,7 @@ const SeurantaMap: React.FC<any> = () => {
                 if (
                   (itemData.trigger &&
                     itemData.trigger.phaseSkips.includes('validation')) ||
-                  date === now
+                  date === dateLimit
                 ) {
                   hoursElapsed = totalHours;
                   phase = 'validation';
@@ -299,7 +321,7 @@ const SeurantaMap: React.FC<any> = () => {
                 if (
                   (itemData.trigger &&
                     itemData.trigger.phaseSkips.includes('similarity')) ||
-                  date === now
+                  date === dateLimit
                 ) {
                   hoursElapsed = totalHours;
                   phase = 'similarity';
@@ -314,7 +336,7 @@ const SeurantaMap: React.FC<any> = () => {
                 if (
                   (itemData.trigger &&
                     itemData.trigger.phaseSkips.includes('reobservation')) ||
-                  date === now
+                  date === dateLimit
                 ) {
                   hoursElapsed = totalHours;
                   phase = 'reobservation';
@@ -326,7 +348,7 @@ const SeurantaMap: React.FC<any> = () => {
                 if (
                   (itemData.trigger &&
                     itemData.trigger.phaseSkips.includes('indefinite')) ||
-                  date === now
+                  date === dateLimit
                 ) {
                   hoursElapsed = totalHours;
                   phase = 'indefinite';
@@ -392,7 +414,6 @@ const SeurantaMap: React.FC<any> = () => {
 
   useEffect(() => {
     if (monInterestTriggers.data != null && monInterests.data != null) {
-      console.log('uff puff');
       let items: ObsData[] = [];
       const services: string[] = [];
       monInterestTriggers.data.forEach((trig) => {
