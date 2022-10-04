@@ -1483,7 +1483,7 @@
                 type: 'geoloc',
                 name: 'Sijaintisi',
                 show: true,
-                center: true,
+                center: opts.mapCenterLatLon == null,
                 zoom: 15,
                 track: false,
               });
