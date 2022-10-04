@@ -460,8 +460,6 @@
                   } else if (an.indexOf('data-default-values') == 0) {
                     try {
                       opts.defaultVals = JSON.parse(av.split("'").join('"'));
-                      // to remove
-                      console.log(opts.defaultVals);
                     } catch (err) {
                       console.log(err);
                     }
@@ -470,8 +468,6 @@
                       opts.mapCenterLatLon = JSON.parse(
                         av.split("'").join('"'),
                       );
-                      // to remove
-                      console.log(opts.mapCenterLatLon);
                     } catch (err) {
                       console.log(err);
                     }
