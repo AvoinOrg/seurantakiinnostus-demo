@@ -307,6 +307,41 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
     });
 };
 
+export const getPriority = async (apiId: string): Promise<Number | null> => {
+  console.log('query triggered');
+  const { data } = await axios.get(ENTRYPOINT, {
+    params: {
+      service_code: 'api_privileges_general_service_code_en_202206071516241',
+      extension: 'true',
+    },
+  });
+
+  for (const key in data) {
+    const item = data[key];
+    if (
+      item.attributes.api_privileges_general_apiid_number_202206071516219 ===
+      apiId
+    ) {
+      const priority =
+        Number(
+          item.attributes.api_privileges_general_level_singlevaluelist_202206071516223.replace(
+            /,/,
+            '.',
+          ),
+        ) +
+        Number(
+          item.attributes.api_privileges_general_increment_number_202206071516225.replace(
+            /,/,
+            '.',
+          ),
+        );
+      return priority;
+    }
+  }
+
+  return null;
+};
+
 const phaseValues = {
   ordered: 32768,
   indefinite: 128,
