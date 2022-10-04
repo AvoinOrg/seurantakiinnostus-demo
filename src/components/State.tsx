@@ -2,6 +2,10 @@ import React, { useEffect, useState, createContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+
+import { getPriority } from '../utils/api';
+import { setPriority } from 'os';
 
 declare const API_KEY: string;
 
@@ -18,13 +22,21 @@ export const StateProvider = (props) => {
   const location = useLocation();
   const queryClient = useQueryClient();
 
-  const [paramPriority, setParamPriority] = useState<string>('');
+  //const [paramPriority, setParamPriority] = useState<string>('');
   const [paramApiKey, setParamApiKey] = useState<string>('');
   const [paramApiId, setParamApiId] = useState<string>('');
+
   const [apiKey, setApiKey] = useState<string>(API_KEY);
+  const [priority, setPriority] = useState<Number | null | undefined>(null);
 
   // Queries
-  // const query = useQuery('todos', getTodos);
+  const priorityQuery = useQuery(
+    ['priority', paramApiId],
+    () => getPriority(paramApiId),
+    {
+      enabled: paramApiId !== '',
+    },
+  );
 
   useEffect(() => {
     if (location) {
@@ -44,11 +56,19 @@ export const StateProvider = (props) => {
         setParamApiKey(value);
         setApiKey(value);
       }
-      if (param === 'priority') {
-        setParamPriority(value);
-      }
+      // if (param === 'priority') {
+      //   setParamPriority(value);
+      // }
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (priorityQuery.data === null) {
+      setPriority(1);
+    } else {
+      setPriority(priorityQuery.data);
+    }
+  }, [priorityQuery.data]);
 
   const handleModalClick = (serviceId: string, widget: any) => {
     if (serviceId === modalService) {
@@ -91,7 +111,8 @@ export const StateProvider = (props) => {
     controlUiEnabled,
     paramApiKey,
     paramApiId,
-    paramPriority,
+    priorityQuery,
+    priority,
     apiKey,
   };
 
