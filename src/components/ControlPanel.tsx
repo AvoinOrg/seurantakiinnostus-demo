@@ -5,7 +5,7 @@ import { Theme } from '../styles';
 import { StateContext } from '../components/State';
 
 function ControlPanel(): React.ReactElement {
-  const { paramPriority, paramApiId }: any = useContext(StateContext);
+  const { priority, paramApiId }: any = useContext(StateContext);
 
   return (
     <Container>
@@ -14,7 +14,7 @@ function ControlPanel(): React.ReactElement {
           System API-ID:&nbsp;<b>{paramApiId}</b>
         </InfoRow>
         <InfoRow>
-          Priority:&nbsp;<b>{paramPriority}</b>
+          Priority:&nbsp;<b>{priority == null ? 'loading..' : priority}</b>
         </InfoRow>
       </InfoContainer>
       {/* <Button>Import</Button> */}
