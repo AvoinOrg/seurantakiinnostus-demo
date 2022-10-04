@@ -12,6 +12,7 @@ import {
 } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.vectorgrid';
+import { useQuery, useQueryClient } from 'react-query';
 
 import { Theme } from '../styles';
 import {
@@ -59,15 +60,51 @@ const SeurantaMap: React.FC<any> = () => {
     useContext(StateContext);
 
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
-  const [obsPoints, setObsPoints] = useState<any>(null);
-  const [monInterestDefs, setMonInterestDefs] = useState<any>(null);
-  const [monInterests, setMonInterests] = useState<any>(null);
-  const [monInterestTriggers, setMonInterestTriggers] = useState<any>(null);
   const [obs, setObs] = useState<any>(null);
   const [lakes, setLakes] = useState<any>(null);
   const [lakesLayer, setLakesLayer] = useState<any>(null);
   const [position, setPosition] = useState<any>(defaultPosition);
   const [zoom, setZoom] = useState<number>(defaultZoom);
+
+  const obsPoints = useQuery(
+    ['observationPoints'],
+    () => getObservationPoints(),
+    {
+      enabled: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  const monInterestDefs = useQuery(
+    ['monitoringInterestDefs'],
+    () => getMonitoringInterestDefs(),
+    {
+      enabled: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  const monInterests = useQuery(
+    ['monitoringInterests'],
+    () => getMonitoringInterests(),
+    {
+      enabled: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  const monInterestTriggers = useQuery(
+    ['monitoringInterestTriggers'],
+    () => getMonitoringInterestTriggers(),
+    {
+      enabled: true,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -78,35 +115,26 @@ const SeurantaMap: React.FC<any> = () => {
     getLakes().then((component: any) => {
       setLakes(component);
     });
-
-    getObservationPoints().then(setObsPoints);
-    getMonitoringInterestDefs().then(setMonInterestDefs);
-    getMonitoringInterests().then(setMonInterests);
-    getMonitoringInterestTriggers().then((arr) => {
-      setMonInterestTriggers(
-        arr.sort((a: any, b: any) => {
-          return b.date - a.date;
-        }),
-      );
-    });
   }, [map]);
 
   useEffect(() => {
     if (
-      obsPoints &&
+      obsPoints.data != null &&
       obs &&
-      monInterestDefs &&
-      monInterests &&
-      monInterestTriggers &&
+      monInterestDefs.data != null &&
+      monInterests.data != null &&
+      monInterestTriggers.data != null &&
       lakes
     ) {
+      console.log(obsPoints);
+      console.log(obs);
       const items: any = [];
 
-      const points = arrayToObject(obsPoints.concat(obs), 'id');
+      const points = arrayToObject(obsPoints.data.concat(obs), 'id');
 
-      const defs = arrayToObject(monInterestDefs, 'id');
+      const defs = arrayToObject(monInterestDefs.data, 'id');
 
-      monInterests.forEach((interest) => {
+      monInterests.data.forEach((interest) => {
         const itemData: any = {};
         itemData.id = interest.id;
         itemData.radius = interest.radius;
@@ -129,7 +157,7 @@ const SeurantaMap: React.FC<any> = () => {
 
           itemData.trigger = null;
 
-          monInterestTriggers.forEach((trig) => {
+          monInterestTriggers.data.forEach((trig) => {
             if (trig.monInterestId === interest.id) {
               if (itemData.trigger && trig.date < itemData.trigger) {
                 return;
@@ -354,25 +382,26 @@ const SeurantaMap: React.FC<any> = () => {
       setObsPointItems(items);
     }
   }, [
-    obsPoints,
+    obsPoints.data,
     obs,
-    monInterestDefs,
-    monInterests,
-    monInterestTriggers,
+    monInterestDefs.data,
+    monInterests.data,
+    monInterestTriggers.data,
     lakes,
   ]);
 
   useEffect(() => {
-    if (monInterestTriggers && monInterests) {
+    if (monInterestTriggers.data != null && monInterests.data != null) {
+      console.log('uff puff');
       let items: ObsData[] = [];
       const services: string[] = [];
-      monInterestTriggers.forEach((trig) => {
+      monInterestTriggers.data.forEach((trig) => {
         const serv = trig.serviceId;
         if (!services.includes(serv) && serv !== undefined) {
           services.push(serv);
         }
       });
-      monInterests.forEach((interest) => {
+      monInterests.data.forEach((interest) => {
         const serv = interest.serviceId;
         if (!services.includes(serv) && serv !== undefined) {
           services.push(serv);
@@ -392,7 +421,7 @@ const SeurantaMap: React.FC<any> = () => {
         setObs(items);
       });
     }
-  }, [monInterestTriggers, monInterests]);
+  }, [monInterestTriggers.data, monInterests.data]);
 
   // const lakeLayer = vectorGrid.protobuf(
   //   'https://gis.avoin.org/geoserver/gwc/service/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=external:lakes&STYLE=polygon&FORMAT=image/png&TILEMATRIXSET=EPSG:3857&TILEMATRIX=EPSG:3857:{z}&TILEROW={x}&TILECOL={y}',
