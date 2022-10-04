@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import { getPriority } from '../utils/api';
-import { setPriority } from 'os';
 
 declare const API_KEY: string;
 
