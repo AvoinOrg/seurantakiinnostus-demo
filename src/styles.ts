@@ -1,18 +1,98 @@
+import { Theme, createTheme, ThemeOptions } from '@mui/material/styles';
 import { createGlobalStyle, css } from 'styled-components';
 
-// try coolors.co
-export const Theme: any = {
-  color: {
-    primary: '#B3E28A',
-    secondary: '#DAA89B',
+declare module '@mui/material/styles' {
+  interface CustomTheme extends Theme {
+    palette: Theme['palette'] & {
+      colors: any;
+    };
+    typography: Theme['typography'] & {
+      primary: any;
+      secondary: any;
+    };
+  }
+
+  interface CustomThemeOptions extends ThemeOptions {
+    palette?: ThemeOptions['palette'] & {
+      colors?: any;
+    };
+    typography?: ThemeOptions['typography'] & {
+      primary?: any;
+      secondary?: any;
+    };
+  }
+
+  export function createTheme(options?: CustomThemeOptions): CustomTheme;
+}
+
+const palette = {
+  primary: {
+    main: '#B3E28A',
+  },
+  secondary: {
+    main: '#DAA89B',
+  },
+  colors: {
     white: '#fff',
     black: '#000000',
   },
-  font: {
+};
+
+export const theme = createTheme({
+  palette: palette,
+  typography: {
+    fontFamily: ['"Varela Round"', 'Lato'].join(','),
     primary: 'Varela Round',
     secondary: 'Lato',
   },
-};
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+      @import url('https://fonts.googleapis.com/css?family=Lato|Varela+Round&display=swap');
+
+      body {
+        font-family: 'Varela Round', sans-serif;
+        font-family: 'Lato', sans-serif;
+
+        font-size: 16px;
+        color: ${palette.primary.main};
+        background-color: ${palette.secondary.main};
+        box-sizing: border-box;
+        &:focus {
+          outline: 0;
+        }
+        height: 100%;
+        display: flex;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        height: 100%;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+
+      #root {
+        display: flex;
+        flex: 1;
+      }
+      `,
+    },
+  },
+});
+// try coolors.co
+// export const Theme: any = {
+//   color: {
+//     primary: '#B3E28A',
+//     secondary: '#DAA89B',
+//     white: '#fff',
+//     black: '#000000',
+//   },
+//   font: {
+//     primary: 'Varela Round',
+//     secondary: 'Lato',
+//   },
+// };
 
 export const GlobalStyle: any = createGlobalStyle`
     ${({ theme }: any): any => css`
