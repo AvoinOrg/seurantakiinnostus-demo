@@ -49,9 +49,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
+    "@mui/material": "^5.10.8",
+    "@mui/x-date-pickers": "^5.0.3",
     "@react-leaflet/core": "^2.0.1",
+    "add": "^2.0.6",
     "axios": "^0.27.2",
     "babel": "^6.23.0",
+    "date-fns": "^2.29.3",
     "json-loader": "^0.5.7",
     "leaflet": "^1.8.0",
     "leaflet.vectorgrid": "^1.3.0",
@@ -62,6 +66,10 @@
     "react-leaflet": "^4.0.2",
     "react-query": "^3.39.2",
     "react-router-dom": "^6.3.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.6",
+    "yarn": "^1.22.19"
+  },
+  "resolutions": {
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest"
   }
 }
