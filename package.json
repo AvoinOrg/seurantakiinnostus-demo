@@ -50,6 +50,7 @@
   "dependencies": {
     "@babel/runtime": "^7.18.9",
     "@mui/material": "^5.10.8",
+    "@mui/styles": "^5.10.8",
     "@mui/x-date-pickers": "^5.0.3",
     "@react-leaflet/core": "^2.0.1",
     "add": "^2.0.6",
