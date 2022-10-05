@@ -1,16 +1,31 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { StaticDateTimePicker } from '@mui/x-date-pickers/StaticDateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import { Theme } from '../styles';
+import { theme } from '../styles';
 import { StateContext } from '../components/State';
 import TextField from '@mui/material/TextField';
 
 function ControlPanel(): React.ReactElement {
-  const { priority, paramApiId }: any = useContext(StateContext);
+  const { priority, paramApiId, selectedDate, setSelectedDate }: any =
+    useContext(StateContext);
 
   return (
     <Container>
       <InfoContainer>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <StaticDateTimePicker
+            displayStaticWrapperAs="desktop"
+            openTo="year"
+            value={selectedDate}
+            onChange={(newValue) => {
+              setSelectedDate(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
         <InfoRow>
           System API-ID:&nbsp;<b>{paramApiId}</b>
         </InfoRow>
@@ -32,14 +47,14 @@ const InfoContainer: any = styled.div`
 const InfoRow: any = styled.div`
   display: flex;
   flex-direction: row;
-  color: ${Theme.color.black};
+  color: ${theme.palette.colors.black};
 `;
 
 const Button: any = styled.div`
   display: flex;
   flex-direction: row;
-  background: ${Theme.color.white};
-  color: ${Theme.color.black};
+  background: ${theme.palette.colors.white};
+  color: ${theme.palette.colors.black};
   border-bottom: 1px solid #ccc;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
   height: 30px;
@@ -64,7 +79,7 @@ const Container: any = styled.div`
   z-index: 2000;
   font: bold 18px;
   font-size: 18px;
-  font-family: ${Theme.font.primary};
+  font-family: ${theme.typography.primary};
   line-height: 30px;
   text-indent: 1px;
   justify-content: flex-end;

@@ -14,7 +14,7 @@ import L from 'leaflet';
 import 'leaflet.vectorgrid';
 import { useQuery, useQueryClient } from 'react-query';
 
-import { Theme } from '../styles';
+import { theme } from '../styles';
 import {
   getObservationPoints,
   getMonitoringInterestDefs,

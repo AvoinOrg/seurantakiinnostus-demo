@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import L from 'leaflet';
 import { Marker, Popup, Circle, GeoJSON } from 'react-leaflet';
 
-import { Theme } from '../styles';
+import { theme } from '../styles';
 import { tsToString } from '../utils/helpers';
 import { StateContext } from '../components/State';
 import monWidget from '../utils/widgets/monWidget';
@@ -311,7 +311,7 @@ const Button: any = styled.p`
   border-radius: 5px;
   padding: 10px;
   text-align: center;
-  background: ${Theme.color.primary};
+  background: ${theme.palette.primary.main};
   &:hover {
     cursor: pointer;
   }

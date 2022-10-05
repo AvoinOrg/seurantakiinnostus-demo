@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { MapContainer } from 'react-leaflet';
 
 import { StateContext } from '../components/State';
-import { Theme } from '../styles';
+import { theme } from '../styles';
 import Loading from './Loading';
 import SeurantaMap from './SeurantaMap';
 
@@ -47,14 +47,14 @@ const Main: React.FC<Props> = ({}) => {
 const Container: any = styled.div`
   display: flex;
   flex: 1;
-  background-color: ${Theme.color.primary};
+  background-color: ${theme.palette.primary.main};
 `;
 
 const MapContainerStyled: any = styled(MapContainer)`
   display: flex;
   flex: 1;
-  background: ${Theme.color.primary};
-  font-family: ${Theme.font.secondary};
+  background: ${theme.palette.primary.main};
+  font-family: ${theme.typography.secondary};
   background: white;
 `;
 

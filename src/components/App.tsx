@@ -1,10 +1,11 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Theme, GlobalStyle } from '../styles';
+import { theme } from '../styles';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { StylesProvider, ThemeProvider } from '@mui/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import { StateProvider } from '../components/State';
 import Main from './Main';
@@ -14,14 +15,16 @@ const queryClient = new QueryClient();
 const App: React.FC<{}> = ({}) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <ThemeProvider theme={Theme}>
-          <GlobalStyle />
-          <StateProvider>
-            <Main></Main>
-          </StateProvider>
+      <StylesProvider>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <CssBaseline />
+            <StateProvider>
+              <Main></Main>
+            </StateProvider>
+          </LocalizationProvider>
         </ThemeProvider>
-      </LocalizationProvider>
+      </StylesProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
