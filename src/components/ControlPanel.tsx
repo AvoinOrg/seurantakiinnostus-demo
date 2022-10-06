@@ -14,20 +14,42 @@ function ControlPanel(): React.ReactElement {
 
   return (
     <Container>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DateTimePicker
+          // displayStaticWrapperAs="desktop"
+          openTo="year"
+          value={selectedDate}
+          ampm={false}
+          ampmInClock={false}
+          inputFormat={'dd/MM/yyyy HH:mm'}
+          onChange={(newValue) => {
+            setSelectedDate(newValue);
+          }}
+          PaperProps={{
+            sx: {
+              margin: '10px -25px 0 0',
+              zIndex: 2500,
+            },
+          }}
+          PopperProps={{
+            sx: {
+              zIndex: 2500,
+            },
+          }}
+          renderInput={(params) => (
+            <TextField
+              sx={{
+                bgcolor: 'background.paper',
+                boxShadow: 1,
+                borderRadius: 2,
+                minWidth: 300,
+              }}
+              {...params}
+            />
+          )}
+        />
+      </LocalizationProvider>
       <InfoContainer>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DateTimePicker
-            // displayStaticWrapperAs="desktop"
-            openTo="year"
-            value={selectedDate}
-            ampm={false}
-            ampmInClock={false}
-            onChange={(newValue) => {
-              setSelectedDate(newValue);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
         <InfoRow>
           System API-ID:&nbsp;<b>{paramApiId}</b>
         </InfoRow>
@@ -43,13 +65,15 @@ function ControlPanel(): React.ReactElement {
 const InfoContainer: any = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 0 10px 0;
+  margin: 10px 0 10px 0;
+  align-items: flex-end;
 `;
 
 const InfoRow: any = styled.div`
   display: flex;
   flex-direction: row;
   color: ${theme.palette.colors.black};
+  width: 150x;
 `;
 
 const Button: any = styled.div`
@@ -72,9 +96,8 @@ const Button: any = styled.div`
 
 const Container: any = styled.div`
   position: fixed;
-  width: 176.24px;
-  bottom: 160px;
-  left: 10px;
+  top: 10px;
+  right: 10px;
   display: flex;
   flex-direction: column;
   flex: 1;
