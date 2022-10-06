@@ -18,9 +18,7 @@ export const StateProvider = (props) => {
   const [searchParams] = useSearchParams();
   const [controlUiEnabled, setControlUiEnabled] = useState<boolean>(false);
   const [widget, setWidget] = useState<any>(null);
-  const [selectedDate, setSelectedDate] = useState<Date>(
-    new Date('2020-10-3'),
-  );
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const location = useLocation();
   const queryClient = useQueryClient();
 
@@ -117,6 +115,7 @@ export const StateProvider = (props) => {
     priority,
     apiKey,
     selectedDate,
+    setSelectedDate,
   };
 
   return (

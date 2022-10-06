@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { StaticDateTimePicker } from '@mui/x-date-pickers/StaticDateTimePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
@@ -16,10 +16,12 @@ function ControlPanel(): React.ReactElement {
     <Container>
       <InfoContainer>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <StaticDateTimePicker
-            displayStaticWrapperAs="desktop"
+          <DateTimePicker
+            // displayStaticWrapperAs="desktop"
             openTo="year"
             value={selectedDate}
+            ampm={false}
+            ampmInClock={false}
             onChange={(newValue) => {
               setSelectedDate(newValue);
             }}
