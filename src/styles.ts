@@ -47,6 +47,7 @@ export const theme = createTheme({
   },
   components: {
     MuiCssBaseline: {
+      // for some reason, none of this works. Everything is in app.css
       styleOverrides: `
       @import url('https://fonts.googleapis.com/css?family=Lato|Varela+Round&display=swap');
 
@@ -55,8 +56,6 @@ export const theme = createTheme({
         font-family: 'Lato', sans-serif;
 
         font-size: 16px;
-        color: ${palette.primary.main};
-        background-color: ${palette.secondary.main};
         box-sizing: border-box;
         &:focus {
           outline: 0;
@@ -76,23 +75,20 @@ export const theme = createTheme({
         display: flex;
         flex: 1;
       }
-      `,
+    `,
     },
   },
+  // components: {
+  //   MuiCssBaseline: {
+  //     styleOverrides: {
+  //       html: {
+  //         height: '100px',
+  //         '-webkit-tap-highlight-color': 'rgba(0, 0, 0, 0)',
+  //       },
+  //     },
+  //   },
+  // },
 });
-// try coolors.co
-// export const Theme: any = {
-//   color: {
-//     primary: '#B3E28A',
-//     secondary: '#DAA89B',
-//     white: '#fff',
-//     black: '#000000',
-//   },
-//   font: {
-//     primary: 'Varela Round',
-//     secondary: 'Lato',
-//   },
-// };
 
 export const GlobalStyle: any = createGlobalStyle`
     ${({ theme }: any): any => css`
