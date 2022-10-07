@@ -27,7 +27,8 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
   const [renderSettings, setRenderSettings] = useState<any>(null);
   const [drawIndicator, setDrawIndicator] = useState<boolean>(false);
 
-  const { handleModalClick, apiKey }: any = useContext(StateContext);
+  const { handleModalClick, apiKey, controlUiEnabled }: any =
+    useContext(StateContext);
   const position: any = [props.ob.lat, props.ob.long];
 
   useEffect(() => {
@@ -272,11 +273,12 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
                     })()}
                 </Field>
               )}
-              {props.ob.serviceId && (
-                <Button onClick={handleSaveClick}>
-                  Save monitoring interest status
-                </Button>
-              )}
+              {props.ob.serviceId &&
+                controlUiEnabled(
+                  <Button onClick={handleSaveClick}>
+                    Save monitoring interest status
+                  </Button>
+                )}
             </Tooltip>
           </Point>
           )
