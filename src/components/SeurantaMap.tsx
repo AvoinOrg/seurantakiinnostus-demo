@@ -127,7 +127,6 @@ const SeurantaMap: React.FC<any> = () => {
       monInterestTriggers.data != null &&
       lakes
     ) {
-      console.log(selectedDate)
       const dateLimit = selectedDate.valueOf();
 
       const obsFiltered = sliceArrayAtValue(obs, selectedDate, 'date');
