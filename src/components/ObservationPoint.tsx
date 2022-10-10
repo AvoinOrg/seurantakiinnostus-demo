@@ -273,12 +273,11 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
                     })()}
                 </Field>
               )}
-              {props.ob.serviceId &&
-                controlUiEnabled(
-                  <Button onClick={handleSaveClick}>
-                    Save monitoring interest status
-                  </Button>
-                )}
+              {props.ob.serviceId && controlUiEnabled && (
+                <Button onClick={handleSaveClick}>
+                  Save monitoring interest status
+                </Button>
+              )}
             </Tooltip>
           </Point>
           )
