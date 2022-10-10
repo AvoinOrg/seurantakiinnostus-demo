@@ -180,8 +180,10 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
           <Point
             position={position}
             icon={renderSettings.icon}
-            onPopupOpen={handlePopupOpen}
-            onPopupClose={handlePopupClose}
+            eventHandlers={{
+              popupopen: handlePopupOpen,
+              popupclose: handlePopupClose,
+            }}
           >
             <Tooltip>
               {renderSettings.levelOfNeed != null && (
