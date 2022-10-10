@@ -47,10 +47,12 @@ export const StateProvider = (props) => {
   }, [location]);
 
   useEffect(() => {
+    var apiIdFound = false;
     for (const entry of searchParams.entries()) {
       const [param, value] = entry;
       if (param === 'apiId') {
         setParamApiId(value);
+        apiIdFound = true;
       }
       if (param === 'apiKey') {
         setParamApiKey(value);
@@ -59,6 +61,9 @@ export const StateProvider = (props) => {
       // if (param === 'priority') {
       //   setParamPriority(value);
       // }
+    }
+    if (!apiIdFound) {
+      setPriority(1);
     }
   }, [searchParams]);
 
