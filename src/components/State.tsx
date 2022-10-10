@@ -27,7 +27,7 @@ export const StateProvider = (props) => {
   const [paramApiId, setParamApiId] = useState<string>('');
 
   const [apiKey, setApiKey] = useState<string>(API_KEY);
-  const [priority, setPriority] = useState<Number | null | undefined>(null);
+  const [priority, setPriority] = useState<Number | null | undefined>(1);
 
   // Queries
   const priorityQuery = useQuery(
@@ -35,6 +35,7 @@ export const StateProvider = (props) => {
     () => getPriority(paramApiId),
     {
       enabled: paramApiId !== '',
+      initialData: priority,
     },
   );
 
@@ -47,12 +48,11 @@ export const StateProvider = (props) => {
   }, [location]);
 
   useEffect(() => {
-    var apiIdFound = false;
     for (const entry of searchParams.entries()) {
       const [param, value] = entry;
       if (param === 'apiId') {
         setParamApiId(value);
-        apiIdFound = true;
+        setPriority(null);
       }
       if (param === 'apiKey') {
         setParamApiKey(value);
@@ -61,9 +61,6 @@ export const StateProvider = (props) => {
       // if (param === 'priority') {
       //   setParamPriority(value);
       // }
-    }
-    if (!apiIdFound) {
-      setPriority(1);
     }
   }, [searchParams]);
 

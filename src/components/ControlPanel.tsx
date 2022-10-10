@@ -51,7 +51,7 @@ function ControlPanel(): React.ReactElement {
       </LocalizationProvider>
       <InfoContainer>
         <InfoRow>
-          System API-ID:&nbsp;<b>{paramApiId !== '' && 'none'}</b>
+          System API-ID:&nbsp;<b>{paramApiId === '' ? 'none' : paramApiId}</b>
         </InfoRow>
         <InfoRow>
           Priority:&nbsp;<b>{priority == null ? 'loading..' : priority}</b>
