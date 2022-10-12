@@ -41,6 +41,8 @@ export const StateProvider = (props) => {
 
   useEffect(() => {
     if (location) {
+      console.log(location.pathname)
+      console.log(location)
       if (location.pathname === '/control') {
         setControlUiEnabled(true);
       }
