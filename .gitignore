@@ -113,4 +113,6 @@ dist
 
 .vscode
 
+.yarn
+
 # End of https://www.gitignore.io/api/node,react
