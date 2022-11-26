@@ -25,6 +25,8 @@ export const StateProvider = (props) => {
   //const [paramPriority, setParamPriority] = useState<string>('');
   const [paramApiKey, setParamApiKey] = useState<string>('');
   const [paramApiId, setParamApiId] = useState<string>('');
+  const [paramEditorApiPriorityLevel, setParamEditorApiPriorityLevel] =
+    useState<string>('');
 
   const [apiKey, setApiKey] = useState<string>(API_KEY);
   const [priority, setPriority] = useState<Number | null | undefined>(1);
@@ -58,9 +60,9 @@ export const StateProvider = (props) => {
         setParamApiKey(value);
         setApiKey(value);
       }
-      // if (param === 'priority') {
-      //   setParamPriority(value);
-      // }
+      if (param === 'editorApiPriorityLevel') {
+        setParamEditorApiPriorityLevel(value);
+      }
     }
   }, [searchParams]);
 
@@ -113,6 +115,7 @@ export const StateProvider = (props) => {
     controlUiEnabled,
     paramApiKey,
     paramApiId,
+    paramEditorApiPriorityLevel,
     priorityQuery,
     priority,
     apiKey,

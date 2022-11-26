@@ -9,8 +9,13 @@ import { StateContext } from '../components/State';
 import TextField from '@mui/material/TextField';
 
 function ControlPanel(): React.ReactElement {
-  const { priority, paramApiId, selectedDate, setSelectedDate }: any =
-    useContext(StateContext);
+  const {
+    priority,
+    paramApiId,
+    paramEditorApiPriorityLevel,
+    selectedDate,
+    setSelectedDate,
+  }: any = useContext(StateContext);
 
   return (
     <Container>
@@ -55,6 +60,14 @@ function ControlPanel(): React.ReactElement {
         </InfoRow>
         <InfoRow>
           Priority:&nbsp;<b>{priority == null ? 'loading..' : priority}</b>
+        </InfoRow>
+        <InfoRow>
+          Editor Priority:&nbsp;
+          <b>
+            {paramEditorApiPriorityLevel == null
+              ? 'loading..'
+              : paramEditorApiPriorityLevel}
+          </b>
         </InfoRow>
       </InfoContainer>
       {/* <Button>Import</Button> */}
