@@ -46,26 +46,36 @@ const getLakes = async () => {
   return data;
 };
 
-const defaultPosition: any = [65.449704, 26.839269];
+const defaultCenter: any = [65.449704, 26.839269];
 const defaultZoom = 6;
 
 const SeurantaMap: React.FC<any> = () => {
   const map = useMap();
   const mapEvents = useMapEvents({
     zoomend: () => {
-      setZoom(mapEvents.getZoom());
+      updateSearchParams({ zoom: map.getZoom() });
+    },
+    moveend: () => {
+      const center = map.getCenter();
+      updateSearchParams({ lat: center[0], lon: center[1] });
     },
   });
 
-  const { loading, setLoading, controlUiEnabled, selectedDate }: any =
-    useContext(StateContext);
+  const {
+    loading,
+    setLoading,
+    controlUiEnabled,
+    selectedDate,
+    paramLat,
+    paramLon,
+    paramZoom,
+    updateSearchParams,
+  }: any = useContext(StateContext);
 
   const [obsPointItems, setObsPointItems] = useState<ObsPointItemData[]>([]);
   const [obs, setObs] = useState<any>(null);
   const [lakes, setLakes] = useState<any>(null);
   const [lakesLayer, setLakesLayer] = useState<any>(null);
-  const [position, setPosition] = useState<any>(defaultPosition);
-  const [zoom, setZoom] = useState<number>(defaultZoom);
 
   const obsPoints = useQuery(
     ['observationPoints'],
@@ -108,14 +118,35 @@ const SeurantaMap: React.FC<any> = () => {
   );
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      setPosition([pos.coords.latitude, pos.coords.longitude]);
-      setZoom(12);
-    });
+    if (map) {
+      if (
+        paramLat == null ||
+        paramLon == null ||
+        paramLat === '' ||
+        paramLon === ''
+      ) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          map.setView([pos.coords.latitude, pos.coords.longitude]);
 
-    getLakes().then((component: any) => {
-      setLakes(component);
-    });
+          if (paramZoom != null) {
+            map.setZoom(12);
+          }
+        });
+        map.setView(defaultCenter, defaultZoom);
+      } else {
+        map.setView([paramLat, paramLon]);
+      }
+
+      if (paramZoom != null || paramZoom === '') {
+        map.setZoom(defaultZoom);
+      } else {
+        map.setZoom(paramZoom);
+      }
+
+      getLakes().then((component: any) => {
+        setLakes(component);
+      });
+    }
   }, [map]);
 
   useEffect(() => {
@@ -453,24 +484,6 @@ const SeurantaMap: React.FC<any> = () => {
   //       '&copy; Karttamateriaali <a href="http://www.maanmittauslaitos.fi/avoindata">Maanmittauslaitos</a>',
   //   },
   // );
-
-  useEffect(() => {
-    if (map && position) {
-      map.setView(position, zoom);
-    }
-  }, [map, position]);
-
-  useEffect(() => {
-    if (lakesLayer) {
-      if (zoom || zoom === 0) {
-        if (zoom > 10) {
-          lakesLayer.remove();
-        } else {
-          lakesLayer.addTo(map);
-        }
-      }
-    }
-  }, [zoom]);
 
   useEffect(() => {
     if (map) {
