@@ -137,7 +137,7 @@ const SeurantaMap: React.FC<any> = () => {
         map.setView([paramLat, paramLon]);
       }
 
-      if (paramZoom != null || paramZoom === '') {
+      if (paramZoom == null || paramZoom === '') {
         map.setZoom(defaultZoom);
       } else {
         map.setZoom(paramZoom);
