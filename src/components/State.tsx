@@ -15,7 +15,7 @@ export const StateProvider = (props) => {
   const [modalService, setModalService] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [widgetLoading, setWidgetLoading] = useState<boolean>(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [controlUiEnabled, setControlUiEnabled] = useState<boolean>(false);
   const [widget, setWidget] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -27,6 +27,9 @@ export const StateProvider = (props) => {
   const [paramApiId, setParamApiId] = useState<string>('');
   const [paramEditorApiPriorityLevel, setParamEditorApiPriorityLevel] =
     useState<string>('');
+  const [paramLat, setParamLat] = useState<string | null>(null);
+  const [paramLon, setParamLon] = useState<string | null>(null);
+  const [paramZoom, setParamZoom] = useState<string | null>(null);
 
   const [apiKey, setApiKey] = useState<string>(API_KEY);
   const [priority, setPriority] = useState<Number | null | undefined>(1);
@@ -62,6 +65,15 @@ export const StateProvider = (props) => {
       }
       if (param === 'editorApiPriorityLevel') {
         setParamEditorApiPriorityLevel(value);
+      }
+      if (param === 'lat') {
+        setParamLat(value);
+      }
+      if (param === 'lon') {
+        setParamLon(value);
+      }
+      if (param === 'zoom') {
+        setParamZoom(value);
       }
     }
   }, [searchParams]);
@@ -100,6 +112,19 @@ export const StateProvider = (props) => {
     }, 100);
   };
 
+  const updateSearchParams = (params: any) => {
+    const searchParamsCopy: URLSearchParams = { ...searchParams };
+    for (const [key, value] of Object.entries(params)) {
+      if (value === '') {
+        // searchParamsCopy.delete(key);
+      } else {
+        // @ts-ignore
+        searchParamsCopy[key] = value;
+      }
+    }
+    setSearchParams(searchParams);
+  };
+
   const values = {
     modalOpen,
     setModalOpen,
@@ -121,6 +146,10 @@ export const StateProvider = (props) => {
     apiKey,
     selectedDate,
     setSelectedDate,
+    paramLat,
+    paramLon,
+    paramZoom,
+    updateSearchParams,
   };
 
   return (
