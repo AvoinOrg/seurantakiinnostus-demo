@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createContext } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -16,6 +16,8 @@ export const StateProvider = (props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [widgetLoading, setWidgetLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
+  const navigate = useNavigate();
   const [controlUiEnabled, setControlUiEnabled] = useState<boolean>(false);
   const [widget, setWidget] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -51,46 +53,51 @@ export const StateProvider = (props) => {
   }, [location]);
 
   useEffect(() => {
-    const newViewParams: any = {};
-    for (const entry of searchParams.entries()) {
-      const [param, value] = entry;
-      if (param === 'apiId') {
-        setParamApiId(value);
-        setPriority(null);
-      }
-      if (param === 'apiKey') {
-        setParamApiKey(value);
-        setApiKey(value);
-      }
-      if (param === 'editorApiPriorityLevel') {
-        setParamEditorApiPriorityLevel(value);
+    if (isFirstLoad) {
+      setIsFirstLoad(false);
+      const newViewParams: any = {};
+      for (const entry of searchParams.entries()) {
+        const [param, value] = entry;
+        if (param === 'apiId') {
+          setParamApiId(value);
+          setPriority(null);
+        }
+        if (param === 'apiKey') {
+          setParamApiKey(value);
+          setApiKey(value);
+        }
+        if (param === 'editorApiPriorityLevel') {
+          setParamEditorApiPriorityLevel(value);
+        }
+
+        if (!viewParams) {
+          if (param === 'lat') {
+            newViewParams.lat = Number(value);
+          }
+          if (param === 'lon') {
+            newViewParams.lon = Number(value);
+          }
+          if (param === 'zoom') {
+            newViewParams.zoom = Number(value);
+          }
+        }
       }
 
       if (!viewParams) {
-        if (param === 'lat') {
-          newViewParams.lat = Number(value);
-        }
-        if (param === 'lon') {
-          newViewParams.lon = Number(value);
-        }
-        if (param === 'zoom') {
-          newViewParams.zoom = Number(value);
-        }
+        setViewParamas(newViewParams);
       }
-    }
-
-    if (!viewParams) {
-      setViewParamas(newViewParams);
     }
   }, [searchParams]);
 
   useEffect(() => {
-    if (priorityQuery.data === null) {
-      setPriority(1);
-    } else {
-      setPriority(priorityQuery.data);
+    if (priorityQuery.isFetched) {
+      if (priorityQuery.data === null) {
+        setPriority(1);
+      } else {
+        setPriority(priorityQuery.data);
+      }
     }
-  }, [priorityQuery.data]);
+  }, [priorityQuery.isFetched]);
 
   const handleModalClick = (serviceId: string, widget: any) => {
     if (serviceId === modalService) {
@@ -119,16 +126,20 @@ export const StateProvider = (props) => {
   };
 
   const updateSearchParams = (params: any) => {
-    const searchParamsCopy: URLSearchParams = { ...searchParams };
     for (const [key, value] of Object.entries(params)) {
-      if (value === '' || value == null) {
-        searchParamsCopy.delete(key);
+      if (searchParams.get(key) != null) {
+        if (value === '' || value == null) {
+          searchParams.delete(key);
+        } else {
+          // @ts-ignore
+          searchParams.set(key, value);
+        }
       } else {
         // @ts-ignore
-        searchParamsCopy[key] = value;
+        searchParams.append(key, value);
       }
     }
-    setSearchParams(searchParamsCopy);
+    navigate(`?${searchParams.toString()}`, { replace: true });
   };
 
   const values = {
