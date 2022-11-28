@@ -127,8 +127,9 @@ const SeurantaMap: React.FC<any> = () => {
         navigator.geolocation.getCurrentPosition((pos) => {
           map.setView([pos.coords.latitude, pos.coords.longitude]);
 
-          if (viewParams.zoom != null) {
+          if (viewParams.zoom == null) {
             map.setZoom(12);
+            return;
           }
         });
         map.setView(defaultCenter, defaultZoom);
