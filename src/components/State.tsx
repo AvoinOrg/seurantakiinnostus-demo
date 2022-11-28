@@ -16,7 +16,7 @@ export const StateProvider = (props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [widgetLoading, setWidgetLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
+  const [urlParamsLoaded, setIsUrlParamsLoaded] = useState<boolean>(false);
   const navigate = useNavigate();
   const [controlUiEnabled, setControlUiEnabled] = useState<boolean>(false);
   const [widget, setWidget] = useState<any>(null);
@@ -54,8 +54,8 @@ export const StateProvider = (props) => {
   }, [location]);
 
   useEffect(() => {
-    if (isFirstLoad) {
-      setIsFirstLoad(false);
+    if (!urlParamsLoaded) {
+      setIsUrlParamsLoaded(true);
 
       const newViewParams: any = {};
       const citobsParams: any = {};
@@ -88,6 +88,7 @@ export const StateProvider = (props) => {
       }
 
       setExtraCitobsParams(citobsParams);
+      console.log(citobsParams);
     }
   }, [searchParams]);
 

@@ -1,7 +1,7 @@
 const baseWidget = (serviceId: string, apiKey, widgetParams, extraParams) => {
   let extra = '';
   for (const key in extraParams) {
-    extra += ` ${key}="${extraParams[key]}"`;
+    extra += ` ${key}="${String(extraParams[key])}"`;
   }
   const start = `
     <div class="CitObsO311Widget"
@@ -10,7 +10,7 @@ const baseWidget = (serviceId: string, apiKey, widgetParams, extraParams) => {
     `;
   const end = ' ></div>';
 
-  return start + widgetParams + extra + end;
+  return start + extra + widgetParams + end;
 };
 
 export default baseWidget;

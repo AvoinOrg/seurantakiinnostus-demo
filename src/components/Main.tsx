@@ -13,8 +13,14 @@ const defaultZoom = 6;
 type Props = {};
 
 const Main: React.FC<Props> = ({}) => {
-  const { modalOpen, setModalOpen, widget, loading, viewParams }: any =
-    useContext(StateContext);
+  const {
+    modalOpen,
+    setModalOpen,
+    widget,
+    loading,
+    viewParams,
+    extraCitobsParams,
+  }: any = useContext(StateContext);
 
   return (
     <Container>
@@ -45,7 +51,7 @@ const Main: React.FC<Props> = ({}) => {
                 : defaultPosition
             }
           >
-            <SeurantaMap></SeurantaMap>
+            {extraCitobsParams && <SeurantaMap></SeurantaMap>}
           </MapContainerStyled>
         )}
       </div>
