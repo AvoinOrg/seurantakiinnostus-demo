@@ -28,8 +28,9 @@ export const StateProvider = (props) => {
   const [paramApiKey, setParamApiKey] = useState<string>('');
   const [paramApiId, setParamApiId] = useState<string>('');
   const [paramEditorApiPriorityLevel, setParamEditorApiPriorityLevel] =
-    useState<string>('');
+    useState<string | null>(null);
   const [viewParams, setViewParamas] = useState<any>(null);
+  const [extraCitobsParams, setExtraCitobsParams] = useState<any>({});
 
   const [apiKey, setApiKey] = useState<string>(API_KEY);
   const [priority, setPriority] = useState<Number | null | undefined>(1);
@@ -55,41 +56,38 @@ export const StateProvider = (props) => {
   useEffect(() => {
     if (isFirstLoad) {
       setIsFirstLoad(false);
+
       const newViewParams: any = {};
+      const citobsParams: any = {};
+
       for (const entry of searchParams.entries()) {
         const [param, value] = entry;
         if (param === 'apiId') {
           setParamApiId(value);
           setPriority(null);
-        }
-        if (param === 'apiKey') {
+        } else if (param === 'apiKey') {
           setParamApiKey(value);
           setApiKey(value);
-        }
-        if (param === 'editorApiPriorityLevel') {
+        } else if (param === 'editorApiPriorityLevel') {
           setParamEditorApiPriorityLevel(value);
-        }
-
-        if (param === 'time') {
+        } else if (param === 'time') {
           setSelectedDate(new Date(Number(value) * 1000));
-        }
-
-        if (!viewParams) {
-          if (param === 'lat') {
-            newViewParams.lat = Number(value);
-          }
-          if (param === 'lon') {
-            newViewParams.lon = Number(value);
-          }
-          if (param === 'zoom') {
-            newViewParams.zoom = Number(value);
-          }
+        } else if (param === 'lat') {
+          newViewParams.lat = Number(value);
+        } else if (param === 'lon') {
+          newViewParams.lon = Number(value);
+        } else if (param === 'zoom') {
+          newViewParams.zoom = Number(value);
+        } else {
+          citobsParams[param] = value;
         }
       }
 
       if (!viewParams) {
         setViewParamas(newViewParams);
       }
+
+      setExtraCitobsParams(citobsParams);
     }
   }, [searchParams]);
 
@@ -169,6 +167,7 @@ export const StateProvider = (props) => {
     setSelectedDate,
     viewParams,
     updateSearchParams,
+    extraCitobsParams,
   };
 
   return (

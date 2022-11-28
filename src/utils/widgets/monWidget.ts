@@ -1,7 +1,8 @@
-const monWidget = (serviceId: string, apiKey) => `
-  <div class="CitObsO311Widget"
+import baseWidget from './baseWidget';
+
+const monWidget = (serviceId: string, apiKey, extraParams) => {
+  const widgetParams = `
     data-type="SingleServiceQuestionnaire"
-    data-service_code="${serviceId}"
     data-show-service_name="true"
     data-show-service_description="true"
     data-show-map="true"
@@ -14,7 +15,9 @@ const monWidget = (serviceId: string, apiKey) => `
     data-obses-cluster="true"
     data-show-questionnaire="true"
     data-images-count="2"
-    data-api-key="${apiKey}"
-  ></div>`;
+  `;
+
+  return baseWidget(serviceId, apiKey, widgetParams, extraParams);
+};
 
 export default monWidget;
