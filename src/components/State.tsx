@@ -70,6 +70,10 @@ export const StateProvider = (props) => {
           setParamEditorApiPriorityLevel(value);
         }
 
+        if (param === 'time') {
+          setSelectedDate(new Date(value));
+        }
+
         if (!viewParams) {
           if (param === 'lat') {
             newViewParams.lat = Number(value);

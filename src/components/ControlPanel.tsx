@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { getUnixTime } from 'date-fns';
 
 import { theme } from '../styles';
 import { StateContext } from '../components/State';
@@ -15,6 +16,7 @@ function ControlPanel(): React.ReactElement {
     paramEditorApiPriorityLevel,
     selectedDate,
     setSelectedDate,
+    updateSearchParams,
   }: any = useContext(StateContext);
 
   return (
@@ -29,6 +31,7 @@ function ControlPanel(): React.ReactElement {
           inputFormat={'dd/MM/yyyy HH:mm'}
           onChange={(newValue) => {
             setSelectedDate(newValue);
+            updateSearchParams({ time: getUnixTime(newValue) });
           }}
           PaperProps={{
             sx: {
