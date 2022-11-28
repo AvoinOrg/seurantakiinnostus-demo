@@ -13,7 +13,7 @@ const defaultZoom = 6;
 type Props = {};
 
 const Main: React.FC<Props> = ({}) => {
-  const { modalOpen, setModalOpen, widget, loading }: any =
+  const { modalOpen, setModalOpen, widget, loading, viewParams }: any =
     useContext(StateContext);
 
   return (
@@ -36,9 +36,18 @@ const Main: React.FC<Props> = ({}) => {
         )}
       </div>
       <div style={{ display: modalOpen ? 'none' : 'flex', flex: 1 }}>
-        <MapContainerStyled zoom={defaultZoom} center={defaultPosition}>
-          <SeurantaMap></SeurantaMap>
-        </MapContainerStyled>
+        {viewParams && (
+          <MapContainerStyled
+            zoom={viewParams.zoom != null ? viewParams.zoom : defaultZoom}
+            center={
+              viewParams.lat != null
+                ? [viewParams.lat, viewParams.lon]
+                : defaultPosition
+            }
+          >
+            <SeurantaMap></SeurantaMap>
+          </MapContainerStyled>
+        )}
       </div>
     </Container>
   );

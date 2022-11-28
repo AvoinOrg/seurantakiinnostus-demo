@@ -27,9 +27,7 @@ export const StateProvider = (props) => {
   const [paramApiId, setParamApiId] = useState<string>('');
   const [paramEditorApiPriorityLevel, setParamEditorApiPriorityLevel] =
     useState<string>('');
-  const [paramLat, setParamLat] = useState<string | null>(null);
-  const [paramLon, setParamLon] = useState<string | null>(null);
-  const [paramZoom, setParamZoom] = useState<string | null>(null);
+  const [viewParams, setViewParamas] = useState<any>(null);
 
   const [apiKey, setApiKey] = useState<string>(API_KEY);
   const [priority, setPriority] = useState<Number | null | undefined>(1);
@@ -53,6 +51,7 @@ export const StateProvider = (props) => {
   }, [location]);
 
   useEffect(() => {
+    const newViewParams: any = {};
     for (const entry of searchParams.entries()) {
       const [param, value] = entry;
       if (param === 'apiId') {
@@ -66,15 +65,22 @@ export const StateProvider = (props) => {
       if (param === 'editorApiPriorityLevel') {
         setParamEditorApiPriorityLevel(value);
       }
-      if (param === 'lat') {
-        setParamLat(value);
+
+      if (!viewParams) {
+        if (param === 'lat') {
+          newViewParams.lat = Number(value);
+        }
+        if (param === 'lon') {
+          newViewParams.lon = Number(value);
+        }
+        if (param === 'zoom') {
+          newViewParams.zoom = Number(value);
+        }
       }
-      if (param === 'lon') {
-        setParamLon(value);
-      }
-      if (param === 'zoom') {
-        setParamZoom(value);
-      }
+    }
+
+    if (!viewParams) {
+      setViewParamas(newViewParams);
     }
   }, [searchParams]);
 
@@ -115,14 +121,14 @@ export const StateProvider = (props) => {
   const updateSearchParams = (params: any) => {
     const searchParamsCopy: URLSearchParams = { ...searchParams };
     for (const [key, value] of Object.entries(params)) {
-      if (value === '') {
-        // searchParamsCopy.delete(key);
+      if (value === '' || value == null) {
+        searchParamsCopy.delete(key);
       } else {
         // @ts-ignore
         searchParamsCopy[key] = value;
       }
     }
-    setSearchParams(searchParams);
+    setSearchParams(searchParamsCopy);
   };
 
   const values = {
@@ -146,9 +152,7 @@ export const StateProvider = (props) => {
     apiKey,
     selectedDate,
     setSelectedDate,
-    paramLat,
-    paramLon,
-    paramZoom,
+    viewParams,
     updateSearchParams,
   };
 

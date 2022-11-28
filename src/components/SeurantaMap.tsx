@@ -52,12 +52,13 @@ const defaultZoom = 6;
 const SeurantaMap: React.FC<any> = () => {
   const map = useMap();
   const mapEvents = useMapEvents({
-    zoomend: () => {
-      updateSearchParams({ zoom: map.getZoom() });
-    },
     moveend: () => {
       const center = map.getCenter();
-      updateSearchParams({ lat: center[0], lon: center[1] });
+      updateSearchParams({
+        lat: center.lat,
+        lon: center.lng,
+        zoom: map.getZoom(),
+      });
     },
   });
 
@@ -66,9 +67,7 @@ const SeurantaMap: React.FC<any> = () => {
     setLoading,
     controlUiEnabled,
     selectedDate,
-    paramLat,
-    paramLon,
-    paramZoom,
+    viewParams,
     updateSearchParams,
   }: any = useContext(StateContext);
 
@@ -118,36 +117,36 @@ const SeurantaMap: React.FC<any> = () => {
   );
 
   useEffect(() => {
-    if (map) {
+    if (map && viewParams) {
       if (
-        paramLat == null ||
-        paramLon == null ||
-        paramLat === '' ||
-        paramLon === ''
+        viewParams.lat == null ||
+        viewParams.lon == null ||
+        viewParams.lat === '' ||
+        viewParams.lon === ''
       ) {
         navigator.geolocation.getCurrentPosition((pos) => {
           map.setView([pos.coords.latitude, pos.coords.longitude]);
 
-          if (paramZoom != null) {
+          if (viewParams.zoom != null) {
             map.setZoom(12);
           }
         });
         map.setView(defaultCenter, defaultZoom);
       } else {
-        map.setView([paramLat, paramLon]);
+        map.setView([viewParams.lat, viewParams.lon]);
       }
 
-      if (paramZoom == null || paramZoom === '') {
+      if (viewParams.zoom == null || viewParams.zoom === '') {
         map.setZoom(defaultZoom);
       } else {
-        map.setZoom(paramZoom);
+        map.setZoom(viewParams.zoom);
       }
 
       getLakes().then((component: any) => {
         setLakes(component);
       });
     }
-  }, [map]);
+  }, [map, viewParams]);
 
   useEffect(() => {
     if (
