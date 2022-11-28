@@ -88,7 +88,6 @@ export const StateProvider = (props) => {
       }
 
       setExtraCitobsParams(citobsParams);
-      console.log(citobsParams);
     }
   }, [searchParams]);
 
