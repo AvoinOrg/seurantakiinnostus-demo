@@ -64,14 +64,12 @@ function ControlPanel(): React.ReactElement {
         <InfoRow>
           Priority:&nbsp;<b>{priority == null ? 'loading..' : priority}</b>
         </InfoRow>
-        <InfoRow>
-          Editor Priority:&nbsp;
-          <b>
-            {paramEditorApiPriorityLevel == null
-              ? 'loading..'
-              : paramEditorApiPriorityLevel}
-          </b>
-        </InfoRow>
+        {paramEditorApiPriorityLevel != null && (
+          <InfoRow>
+            Editor Priority:&nbsp;
+            <b>{paramEditorApiPriorityLevel}</b>
+          </InfoRow>
+        )}
       </InfoContainer>
       {/* <Button>Import</Button> */}
     </Container>
