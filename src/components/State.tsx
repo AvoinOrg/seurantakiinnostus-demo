@@ -71,7 +71,7 @@ export const StateProvider = (props) => {
         }
 
         if (param === 'time') {
-          setSelectedDate(new Date(value));
+          setSelectedDate(new Date(Number(value) * 1000));
         }
 
         if (!viewParams) {
