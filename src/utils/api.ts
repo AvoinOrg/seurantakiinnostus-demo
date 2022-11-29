@@ -38,7 +38,6 @@ export const getObservationPoints = async (): Promise<ObsPointData[]> => {
     lat: Number(item.lat.replace(/,/, '.')),
     long: Number(item.long.replace(/,/, '.')),
     hashtags: splitAndTrim(item, 'hashtags'),
-    keywords: splitAndTrim(item, 'keywords'),
   }));
 
   return items;
@@ -64,7 +63,6 @@ export const getMonitoringInterests = async (): Promise<MonInterestData[]> => {
       ? Number(item.attributes.number_201911180956460)
       : 0,
     hashtags: splitAndTrim(item, 'hashtags'),
-    keywords: splitAndTrim(item, 'keywords'),
   }));
 
   items.sort((a: any, b: any) => {
@@ -160,7 +158,6 @@ export const getMonitoringInterestDefs = async (): Promise<
         )
       : 0,
     hashtags: splitAndTrim(item, 'hashtags'),
-    keywords: splitAndTrim(item, 'keywords'),
   }));
 
   items.sort((a: any, b: any) => {
@@ -235,7 +232,6 @@ export const getMonitoringInterestTriggers = async (): Promise<
         item.attributes.monint_kSd_number_201912031300520.replace(/,/, '.'),
       ),
     hashtags: splitAndTrim(item, 'hashtags'),
-    keywords: splitAndTrim(item, 'keywords'),
   }));
 
   items.sort((a: any, b: any) => {
@@ -261,7 +257,6 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
         lat: Number(item.lat.replace(/,/, '.')),
         long: Number(item.long.replace(/,/, '.')),
         hashtags: splitAndTrim(item, 'hashtags'),
-        keywords: splitAndTrim(item, 'keywords'),
       }));
 
       return obs;
@@ -270,6 +265,26 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
       console.log(error);
       return [];
     });
+};
+
+export const getServices = async (): Promise<ObsPointData[]> => {
+  const { data } = await axios.get(
+    'https://rajapinnat.ymparisto.fi/api/kansalaishavainnot/1.0/services.json',
+    {
+      params: {
+        extension: 'true',
+      },
+    },
+  );
+
+  const items: ObsPointData[] = data.map((item: any) => ({
+    service_code: item.service_code,
+    service_name: item.service_name,
+    description: item.description,
+    keywords: splitAndTrim(item, 'keywords'),
+  }));
+
+  return items;
 };
 
 export const getPriority = async (apiId: string): Promise<Number | null> => {
