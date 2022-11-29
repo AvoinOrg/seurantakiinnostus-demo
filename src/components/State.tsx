@@ -30,7 +30,7 @@ export const StateProvider = (props) => {
   const [paramEditorApiPriorityLevel, setParamEditorApiPriorityLevel] =
     useState<string | null>(null);
   const [viewParams, setViewParamas] = useState<any>(null);
-  const [extraCitobsParams, setExtraCitobsParams] = useState<any>({});
+  const [extraParams, setExtraParams] = useState<any>(null);
 
   const [apiKey, setApiKey] = useState<string>(API_KEY);
   const [priority, setPriority] = useState<Number | null | undefined>(1);
@@ -58,7 +58,7 @@ export const StateProvider = (props) => {
       setIsUrlParamsLoaded(true);
 
       const newViewParams: any = {};
-      const citobsParams: any = {};
+      const extraUrlParams: any = { citobsParams: {}, hashtags: [] };
 
       for (const entry of searchParams.entries()) {
         const [param, value] = entry;
@@ -79,7 +79,7 @@ export const StateProvider = (props) => {
         } else if (param === 'zoom') {
           newViewParams.zoom = Number(value);
         } else {
-          citobsParams[param] = value;
+          extraUrlParams.citobsParams[param] = value;
         }
       }
 
@@ -87,7 +87,7 @@ export const StateProvider = (props) => {
         setViewParamas(newViewParams);
       }
 
-      setExtraCitobsParams(citobsParams);
+      setExtraParams(extraUrlParams);
     }
   }, [searchParams]);
 

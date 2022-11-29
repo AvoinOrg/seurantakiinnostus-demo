@@ -27,7 +27,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
   const [renderSettings, setRenderSettings] = useState<any>(null);
   const [drawIndicator, setDrawIndicator] = useState<boolean>(false);
 
-  const { handleModalClick, apiKey, controlUiEnabled, extraCitobsParams }: any =
+  const { handleModalClick, apiKey, controlUiEnabled, extraParams }: any =
     useContext(StateContext);
   const position: any = [props.ob.lat, props.ob.long];
 
@@ -122,7 +122,11 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
   }, []);
 
   const handleMonClick = () => {
-    const newWidget = monWidget(props.ob.serviceId, apiKey, extraCitobsParams);
+    const newWidget = monWidget(
+      props.ob.serviceId,
+      apiKey,
+      extraParams.citobsParams,
+    );
     handleModalClick(props.ob.serviceId, newWidget);
   };
 
@@ -139,7 +143,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
         csepin_intereststatus_siteid_string_en_202209161148418: props.ob.id,
       },
       position,
-      extraCitobsParams,
+      extraParams.citobsParams,
     );
     handleModalClick(props.ob.serviceId, newWidget);
   };

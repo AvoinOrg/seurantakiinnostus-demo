@@ -19,7 +19,7 @@ const Main: React.FC<Props> = ({}) => {
     widget,
     loading,
     viewParams,
-    extraCitobsParams,
+    extraParams,
   }: any = useContext(StateContext);
 
   return (
@@ -51,7 +51,7 @@ const Main: React.FC<Props> = ({}) => {
                 : defaultPosition
             }
           >
-            {extraCitobsParams && <SeurantaMap></SeurantaMap>}
+            {extraParams && <SeurantaMap></SeurantaMap>}
           </MapContainerStyled>
         )}
       </div>
