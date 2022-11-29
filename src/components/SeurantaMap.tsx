@@ -13,6 +13,7 @@ import {
 import L from 'leaflet';
 import 'leaflet.vectorgrid';
 import { useQuery, useQueryClient } from 'react-query';
+import _ from 'lodash';
 
 import { theme } from '../styles';
 import {
@@ -21,6 +22,7 @@ import {
   getMonitoringInterestTriggers,
   getMonitoringInterests,
   getObservationData,
+  getServices,
 } from '../utils/api';
 import {
   ObsPointData,
@@ -35,6 +37,7 @@ import {
   hoursBetweenTimestamps,
   isInside,
   sliceArrayAtValue,
+  arrIncludesAny,
 } from '../utils/helpers';
 import ObservationPoint from './ObservationPoint';
 import Loading from './Loading';
@@ -68,6 +71,7 @@ const SeurantaMap: React.FC<any> = () => {
     controlUiEnabled,
     selectedDate,
     viewParams,
+    extraParams,
     updateSearchParams,
   }: any = useContext(StateContext);
 
@@ -116,6 +120,12 @@ const SeurantaMap: React.FC<any> = () => {
     },
   );
 
+  const services = useQuery(['getServices'], () => getServices(), {
+    enabled: true,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
   useEffect(() => {
     if (map && viewParams) {
       if (
@@ -156,6 +166,7 @@ const SeurantaMap: React.FC<any> = () => {
       monInterestDefs.data != null &&
       monInterests.data != null &&
       monInterestTriggers.data != null &&
+      services.data != null &&
       lakes
     ) {
       const dateLimit = selectedDate.valueOf();
@@ -196,6 +207,7 @@ const SeurantaMap: React.FC<any> = () => {
         const def = defs[interest.monInterestDefId];
 
         if (def) {
+          itemData.hashtags = def.hashtags;
           itemData.Tv = def.Tv;
           itemData.Ts = def.Ts;
           itemData.Tr = def.Tr;
@@ -223,6 +235,12 @@ const SeurantaMap: React.FC<any> = () => {
             }
           });
 
+          if (itemData.trigger != null) {
+            itemData.hashtags = itemData.hashtags.concat(
+              itemData.trigger.hashtags,
+            );
+          }
+
           if (itemData.trigger && itemData.trigger.Spmin != null) {
             itemData.Spmin = itemData.trigger.Spmin;
           } else {
@@ -243,6 +261,8 @@ const SeurantaMap: React.FC<any> = () => {
             itemData.t0 = firstObs.date;
             itemData.lat = firstObs.lat;
             itemData.long = firstObs.long;
+
+            itemData.hashtags = itemData.hashtags.concat(firstObs.hashtags);
           } else {
             itemData.t0 = interest.date;
             itemData.lat = interest.lat;
@@ -274,6 +294,8 @@ const SeurantaMap: React.FC<any> = () => {
 
           itemData.serviceId = interest.serviceId;
 
+          itemData.hashtags = itemData.hashtags.concat(interest.hashtags);
+
           const serviceId =
             itemData.trigger && itemData.trigger.serviceId != null
               ? itemData.trigger.serviceId
@@ -297,6 +319,8 @@ const SeurantaMap: React.FC<any> = () => {
                         ))
                     ) {
                       obDates.unshift(ob.date);
+
+                      itemData.hashtags = itemData.hashtags.concat(ob.hashtags);
                     }
                   }
                 }
@@ -427,10 +451,46 @@ const SeurantaMap: React.FC<any> = () => {
           itemData.s = s;
           itemData.phase = phase;
 
-          items.push(itemData);
+          itemData.hashtags = _.uniq(itemData.hashtags);
+
+          const service = services.data.find(
+            (s) => s.service_code === itemData.serviceId,
+          );
+
+          if (service) {
+            itemData.keywords = service.keywords;
+            itemData.description = service.description;
+            itemData.name = service.service_name;
+          }
+
+          // If either keyword or hashtag matches, add to results. Or, if no keywords or hashtags are defined, add to results.
+          let isFilteredByHashtags = true;
+          let isFilteredByKeywords = true;
+
+          if (extraParams.hashtags.length > 0) {
+            if (arrIncludesAny(itemData.hashtags, extraParams.hashtags)) {
+              isFilteredByHashtags = false;
+            }
+          }
+
+          if (extraParams.keywords.length > 0) {
+            if (arrIncludesAny(itemData.keywords, extraParams.keywords)) {
+              isFilteredByKeywords = false;
+            }
+          }
+
+          if (
+            !isFilteredByHashtags ||
+            !isFilteredByKeywords ||
+            (extraParams.keywords.length === 0 &&
+              extraParams.hashtags.length === 0)
+          ) {
+            items.push(itemData);
+          }
         }
       });
 
+      console.log(items);
       setLoading(false);
       setObsPointItems(items);
     }
@@ -440,6 +500,7 @@ const SeurantaMap: React.FC<any> = () => {
     monInterestDefs.data,
     monInterests.data,
     monInterestTriggers.data,
+    services.data,
     lakes,
     selectedDate,
   ]);
