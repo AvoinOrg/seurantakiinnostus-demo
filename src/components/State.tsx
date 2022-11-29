@@ -57,7 +57,11 @@ export const StateProvider = (props) => {
       setIsUrlParamsLoaded(true);
 
       const newViewParams: any = {};
-      const extraUrlParams: any = { citobsParams: {}, hashtags: [] };
+      const extraUrlParams: any = {
+        citobsParams: {},
+        hashtags: [],
+        keywords: [],
+      };
 
       for (const entry of searchParams.entries()) {
         const [param, value] = entry;
@@ -79,6 +83,8 @@ export const StateProvider = (props) => {
           newViewParams.zoom = Number(value);
         } else if (param === 'hashtags') {
           extraUrlParams.hashtags = value.split(',');
+        } else if (param === 'keywords') {
+          extraUrlParams.keywords = value.split(',');
         } else {
           extraUrlParams.citobsParams[param] = value;
         }
