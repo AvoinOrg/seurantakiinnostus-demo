@@ -12,12 +12,14 @@ import {
 const ENTRYPOINT =
   'https://rajapinnat.ymparisto.fi/api/kansalaishavainnot/1.0/requests.json';
 
-const getItemHashtags = (item: any): string[] => {
-  let hashtags = [];
-  if (item.hashtags != null && item.hashtags != '')
-    hashtags = item.hashtags.split(',');
+const splitAndTrim = (item: any, field: string): string[] => {
+  let arr = [];
+  if (item[field] != null && item[field] != '') {
+    arr = item[field].split(',');
+  }
 
-  return hashtags;
+  const trimmedArr = arr.map((el: string) => el.trim());
+  return trimmedArr;
 };
 
 export const getObservationPoints = async (): Promise<ObsPointData[]> => {
@@ -35,7 +37,8 @@ export const getObservationPoints = async (): Promise<ObsPointData[]> => {
     serviceName: item.service_name,
     lat: Number(item.lat.replace(/,/, '.')),
     long: Number(item.long.replace(/,/, '.')),
-    hashtags: getItemHashtags(item),
+    hashtags: splitAndTrim(item, 'hashtags'),
+    keywords: splitAndTrim(item, 'keywords'),
   }));
 
   return items;
@@ -60,7 +63,8 @@ export const getMonitoringInterests = async (): Promise<MonInterestData[]> => {
     radius: item.attributes.number_201911180956460
       ? Number(item.attributes.number_201911180956460)
       : 0,
-    hashtags: getItemHashtags(item),
+    hashtags: splitAndTrim(item, 'hashtags'),
+    keywords: splitAndTrim(item, 'keywords'),
   }));
 
   items.sort((a: any, b: any) => {
@@ -155,7 +159,8 @@ export const getMonitoringInterestDefs = async (): Promise<
           item.attributes.monint_Somin_number_201912121743338.replace(/,/, '.'),
         )
       : 0,
-    hashtags: getItemHashtags(item),
+    hashtags: splitAndTrim(item, 'hashtags'),
+    keywords: splitAndTrim(item, 'keywords'),
   }));
 
   items.sort((a: any, b: any) => {
@@ -229,7 +234,8 @@ export const getMonitoringInterestTriggers = async (): Promise<
       Number(
         item.attributes.monint_kSd_number_201912031300520.replace(/,/, '.'),
       ),
-    hashtags: getItemHashtags(item),
+    hashtags: splitAndTrim(item, 'hashtags'),
+    keywords: splitAndTrim(item, 'keywords'),
   }));
 
   items.sort((a: any, b: any) => {
@@ -254,7 +260,8 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
         date: Date.parse(item.requested_datetime),
         lat: Number(item.lat.replace(/,/, '.')),
         long: Number(item.long.replace(/,/, '.')),
-        hashtags: getItemHashtags(item),
+        hashtags: splitAndTrim(item, 'hashtags'),
+        keywords: splitAndTrim(item, 'keywords'),
       }));
 
       return obs;
