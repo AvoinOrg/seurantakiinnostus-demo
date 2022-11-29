@@ -27,6 +27,7 @@ export const getObservationPoints = async (): Promise<ObsPointData[]> => {
     serviceName: item.service_name,
     lat: Number(item.lat.replace(/,/, '.')),
     long: Number(item.long.replace(/,/, '.')),
+    hashtags: item.hashtags.split(','),
   }));
 
   return items;
@@ -51,6 +52,7 @@ export const getMonitoringInterests = async (): Promise<MonInterestData[]> => {
     radius: item.attributes.number_201911180956460
       ? Number(item.attributes.number_201911180956460)
       : 0,
+    hashtags: item.hashtags.split(','),
   }));
 
   items.sort((a: any, b: any) => {
@@ -145,6 +147,7 @@ export const getMonitoringInterestDefs = async (): Promise<
           item.attributes.monint_Somin_number_201912121743338.replace(/,/, '.'),
         )
       : 0,
+    hashtags: item.hashtags.split(','),
   }));
 
   items.sort((a: any, b: any) => {
@@ -218,6 +221,7 @@ export const getMonitoringInterestTriggers = async (): Promise<
       Number(
         item.attributes.monint_kSd_number_201912031300520.replace(/,/, '.'),
       ),
+    hashtags: item.hashtags.split(','),
   }));
 
   items.sort((a: any, b: any) => {
@@ -242,6 +246,7 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
         date: Date.parse(item.requested_datetime),
         lat: Number(item.lat.replace(/,/, '.')),
         long: Number(item.long.replace(/,/, '.')),
+        hashtags: item.hashtags.split(','),
       }));
 
       return obs;
