@@ -2,7 +2,6 @@ import React, { useEffect, useState, createContext } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
 
 import { getPriority } from '../utils/api';
 
@@ -78,6 +77,8 @@ export const StateProvider = (props) => {
           newViewParams.lon = Number(value);
         } else if (param === 'zoom') {
           newViewParams.zoom = Number(value);
+        } else if (param === 'hashtags') {
+          extraUrlParams.hashtags = value.split(',');
         } else {
           extraUrlParams.citobsParams[param] = value;
         }
@@ -167,7 +168,7 @@ export const StateProvider = (props) => {
     setSelectedDate,
     viewParams,
     updateSearchParams,
-    extraCitobsParams,
+    extraParams,
   };
 
   return (
