@@ -7,6 +7,7 @@ import {
   MonInterestTriggerData,
   ObsData,
   ObsRes,
+  ServiceData,
 } from './types';
 
 const ENTRYPOINT =
@@ -267,7 +268,7 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
     });
 };
 
-export const getServices = async (): Promise<ObsPointData[]> => {
+export const getServices = async (): Promise<ServiceData[]> => {
   const { data } = await axios.get(
     'https://rajapinnat.ymparisto.fi/api/kansalaishavainnot/1.0/services.json',
     {
@@ -277,7 +278,7 @@ export const getServices = async (): Promise<ObsPointData[]> => {
     },
   );
 
-  const items: ObsPointData[] = data.map((item: any) => ({
+  const items: ServiceData[] = data.map((item: any) => ({
     service_code: item.service_code,
     service_name: item.service_name,
     description: item.description,

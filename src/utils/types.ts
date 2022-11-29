@@ -25,6 +25,7 @@ export interface ObsPointData {
   Td?: number;
   Sd?: number;
   kSd?: number;
+  hashtags: string[];
 }
 
 export interface MonInterestData {
@@ -36,6 +37,7 @@ export interface MonInterestData {
   lat: number;
   long: number;
   radius: number;
+  hashtags: string[];
 }
 
 export interface MonInterestDefData {
@@ -57,6 +59,7 @@ export interface MonInterestDefData {
   Spmin: number;
   Spmax: number;
   dSv: number;
+  hashtags: string[];
 }
 
 export interface MonInterestTriggerData {
@@ -74,6 +77,7 @@ export interface MonInterestTriggerData {
   Td: number;
   Sd: number;
   kSd: number;
+  hashtags: string[];
 }
 
 export interface ObsData {
@@ -82,6 +86,14 @@ export interface ObsData {
   date: number;
   lat: number;
   long: number;
+  hashtags: string[];
+}
+
+export interface ServiceData {
+  service_code: string;
+  service_name: string;
+  description: string;
+  keywords: string[];
 }
 
 export interface ObsRes {
