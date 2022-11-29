@@ -12,6 +12,14 @@ import {
 const ENTRYPOINT =
   'https://rajapinnat.ymparisto.fi/api/kansalaishavainnot/1.0/requests.json';
 
+const getItemHashtags = (item: any): string[] => {
+  let hashtags = [];
+  if (item.hashtags != null && item.hashtags != '')
+    hashtags = item.hashtags.split(',');
+
+  return hashtags;
+};
+
 export const getObservationPoints = async (): Promise<ObsPointData[]> => {
   const { data } = await axios.get(ENTRYPOINT, {
     params: {
@@ -27,7 +35,7 @@ export const getObservationPoints = async (): Promise<ObsPointData[]> => {
     serviceName: item.service_name,
     lat: Number(item.lat.replace(/,/, '.')),
     long: Number(item.long.replace(/,/, '.')),
-    hashtags: item.hashtags.split(','),
+    hashtags: getItemHashtags(item),
   }));
 
   return items;
@@ -52,7 +60,7 @@ export const getMonitoringInterests = async (): Promise<MonInterestData[]> => {
     radius: item.attributes.number_201911180956460
       ? Number(item.attributes.number_201911180956460)
       : 0,
-    hashtags: item.hashtags.split(','),
+    hashtags: getItemHashtags(item),
   }));
 
   items.sort((a: any, b: any) => {
@@ -147,7 +155,7 @@ export const getMonitoringInterestDefs = async (): Promise<
           item.attributes.monint_Somin_number_201912121743338.replace(/,/, '.'),
         )
       : 0,
-    hashtags: item.hashtags.split(','),
+    hashtags: getItemHashtags(item),
   }));
 
   items.sort((a: any, b: any) => {
@@ -221,7 +229,7 @@ export const getMonitoringInterestTriggers = async (): Promise<
       Number(
         item.attributes.monint_kSd_number_201912031300520.replace(/,/, '.'),
       ),
-    hashtags: item.hashtags.split(','),
+    hashtags: getItemHashtags(item),
   }));
 
   items.sort((a: any, b: any) => {
@@ -246,7 +254,7 @@ export const getObservationData = (serviceCode: string): Promise<ObsData[]> => {
         date: Date.parse(item.requested_datetime),
         lat: Number(item.lat.replace(/,/, '.')),
         long: Number(item.long.replace(/,/, '.')),
-        hashtags: item.hashtags.split(','),
+        hashtags: getItemHashtags(item),
       }));
 
       return obs;
