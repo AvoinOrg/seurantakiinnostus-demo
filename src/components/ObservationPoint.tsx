@@ -15,13 +15,7 @@ interface Props {
 
 const NO_COLOR = 'gray';
 const COLORS = ['#0eb51f', '#afde16', '#dce312', '#de8716', '#b5110e'];
-const LEVEL_OF_NEED = [
-  'hyvin vähäinen',
-  'pieni',
-  'keskisuuri',
-  'suurehko',
-  'suuri',
-];
+const LEVEL_OF_NEED = ['very low', 'low', 'medium', 'high', 'very high'];
 
 const ObservationPoint: React.FC<Props> = (props: Props) => {
   const [renderSettings, setRenderSettings] = useState<any>(null);
@@ -79,7 +73,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
       } else {
         color = 'grey';
         size = 28;
-        settings.levelOfNeed = 'ei tarvetta';
+        settings.levelOfNeed = 'none';
         settings.icon = L.divIcon({
           className: 'pin',
           iconAnchor: [size / 2, size / 2],
@@ -100,7 +94,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
     } else {
       size = 44;
       color = NO_COLOR;
-      settings.levelOfNeed = 'ei määritetty';
+      settings.levelOfNeed = 'not specified';
       settings.icon = L.divIcon({
         className: 'pin',
         iconAnchor: [size / 2, size / 2],
@@ -194,7 +188,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               {renderSettings.levelOfNeed != null && (
                 <>
                   <Header>
-                    Havainnon tarve alueella:{' '}
+                    Need of observation in the area:{' '}
                     <span style={{ color: renderSettings.color }}>
                       <b>{renderSettings.levelOfNeed}</b>
                     </span>{' '}
@@ -203,18 +197,42 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
                 </>
               )}
               {props.ob.serviceId && (
-                <Button onClick={handleMonClick}>Lisää havainto</Button>
+                <Button onClick={handleMonClick}>Add observation</Button>
               )}
               <hr style={{ margin: '15px 0 15px 0' }} />
+              {props.ob.serviceName != null && (
+                <Field>
+                  <b>Monitoring service name:</b>
+                  {'  ' + props.ob.serviceName}
+                </Field>
+              )}
               {props.ob.serviceId != null && (
                 <Field>
-                  <b>Ilmoituspalvelu:</b>
+                  <b>Monitoring service id:</b>
                   {'  ' + props.ob.serviceId}
                 </Field>
               )}
+              {props.ob.serviceDescription != null && (
+                <Field>
+                  <b>Monitoring service description:</b>
+                  {'  ' + props.ob.serviceDescription}
+                </Field>
+              )}
+              {/* {props.ob.serviceKeywords != null && (
+                <Field>
+                  <b>Monitoring service keywords:</b>
+                  {'  ' + props.ob.serviceKeywords.join(', ')}
+                </Field>
+              )}
+              {props.ob.hashtags != null && (
+                <Field>
+                  <b>Related hashtags:</b>
+                  {'  ' + props.ob.hashtags.join(', ')}
+                </Field>
+              )} */}
               {props.ob.created != null && (
                 <Field>
-                  <b>Seurantakiinnostuksen alku:</b>
+                  <b>Beginning of monitoring interest:</b>
                   {(() => {
                     return '  ' + tsToString(props.ob.created);
                   })()}
@@ -222,7 +240,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               )}
               {props.ob.t0 != null && props.ob.created != null && (
                 <Field>
-                  <b>Viimeisin kiinnostuksen herätys:</b>
+                  <b>Latest triggering of interest:</b>
                   {(() => {
                     if (props.ob.trigger) {
                       return '  ' + tsToString(props.ob.t0);
@@ -234,7 +252,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               )}
               {props.ob.s != null && (
                 <Field>
-                  <b>Viimeisin havainto:</b>
+                  <b>Latest observation:</b>
                   {(() => {
                     if (props.ob.lastObDate != null) {
                       return '  ' + tsToString(props.ob.lastObDate);
@@ -246,36 +264,39 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
               )}
               {props.ob.count != null && (
                 <Field>
-                  <b>Havaintoja alueella seurantakiinnostuksen alun jälkeen:</b>
+                  <b>
+                    Observations in the area after the beginning of monitoring
+                    interest:
+                  </b>
                   {'  ' + props.ob.count}
                 </Field>
               )}
               {renderSettings.s != null && (
                 <Field>
-                  <b>Seurantakiinnostus (S):</b>
+                  <b>Monitoring interest (S):</b>
                   {'  ' + renderSettings.s.toFixed(2)}
                 </Field>
               )}
               {renderSettings.p != null && (
                 <Field>
-                  <b>Skaalattu seurantakiinnostus (P):</b>
+                  <b>Scaled monitoring interest (P):</b>
                   {'  ' + renderSettings.p.toFixed(2) + '%'}
                 </Field>
               )}
               {props.ob.phase != null && (
                 <Field>
-                  <b>Nykyinen seurantakiinnostuksen vaihe:</b>
+                  <b>Current phase of monitoring interest:</b>
                   {'  ' +
                     (() => {
                       switch (renderSettings.phase) {
                         case 'validation':
-                          return 'validointi';
+                          return 'validation';
                         case 'similarity':
-                          return 'samankaltaisuusvaihe';
+                          return 'similarity';
                         case 'reobservation':
-                          return 'uudelleenhavaitseminen';
+                          return 'reobservation';
                         default:
-                          return 'perusvaihe';
+                          return 'basic';
                       }
                     })()}
                 </Field>
@@ -299,6 +320,7 @@ const Point: any = styled(Marker)``;
 const Tooltip: any = styled(Popup)`
   flex: 1;
   flex-direction: column;
+  }
 `;
 
 const Header: any = styled.p`

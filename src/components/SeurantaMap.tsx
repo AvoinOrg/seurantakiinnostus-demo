@@ -458,9 +458,9 @@ const SeurantaMap: React.FC<any> = () => {
           );
 
           if (service) {
-            itemData.keywords = service.keywords;
-            itemData.description = service.description;
-            itemData.name = service.service_name;
+            itemData.serviceKeywords = service.keywords;
+            itemData.serviceDescription = service.description;
+            itemData.serviceName = service.service_name;
           }
 
           // If either keyword or hashtag matches, add to results. Or, if no keywords or hashtags are defined, add to results.
@@ -474,7 +474,9 @@ const SeurantaMap: React.FC<any> = () => {
           }
 
           if (extraParams.keywords.length > 0) {
-            if (arrIncludesAny(itemData.keywords, extraParams.keywords)) {
+            if (
+              arrIncludesAny(itemData.serviceKeywords, extraParams.keywords)
+            ) {
               isFilteredByKeywords = false;
             }
           }
@@ -595,9 +597,9 @@ const SeurantaMap: React.FC<any> = () => {
       {obsPointItems.map((item) => (
         <ObservationPoint key={item.id} ob={item} />
       ))}
-      <LegendContainer>
+      {/* <LegendContainer>
         <LegendImg />
-      </LegendContainer>
+      </LegendContainer> */}
       {controlUiEnabled && <ControlPanel></ControlPanel>}
       {loading && (
         <LoadingContainer>
@@ -608,24 +610,24 @@ const SeurantaMap: React.FC<any> = () => {
   );
 };
 
-const LegendContainer: any = styled.div`
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  display: flex;
-  flex: 1;
-  z-index: 1000;
-`;
+// const LegendContainer: any = styled.div`
+//   position: fixed;
+//   bottom: 10px;
+//   left: 10px;
+//   display: flex;
+//   flex: 1;
+//   z-index: 1000;
+// `;
 
-const LegendImg: any = styled.img.attrs({
-  src: require('../assets/legend.svg'),
-})`
-  background-color: rgb(255, 255, 255, 0.7);
-  padding: 10px;
-  height: 120px;
-  border-radius: 4px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
-`;
+// const LegendImg: any = styled.img.attrs({
+//   src: require('../assets/legend.svg'),
+// })`
+//   background-color: rgb(255, 255, 255, 0.7);
+//   padding: 10px;
+//   height: 120px;
+//   border-radius: 4px;
+//   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+// `;
 
 const LoadingContainer: any = styled.div`
   position: fixed;
