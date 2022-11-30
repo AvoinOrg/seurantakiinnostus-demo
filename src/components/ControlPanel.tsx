@@ -24,6 +24,7 @@ function ControlPanel(): React.ReactElement {
     updateSearchParams,
     apiKey,
     extraParams,
+    UIPriorityLevel,
   }: any = useContext(StateContext);
 
   const handleAnticipatedClick = () => {
@@ -101,14 +102,22 @@ function ControlPanel(): React.ReactElement {
         </InfoContainer>
       </TopRightContainer>
       <BottomRightContainer>
-        <Button onClick={handleSiteCick}>Setting monitoring site</Button>
-        <Button onClick={handleAnticipatedClick}>
-          Setting anticipated data input service type
-        </Button>
-        <Button onClick={handleTriggeringClick}>
-          Setting triggering event
-        </Button>
-        <Button onClick={handleReportsClick}>Reports and requests</Button>
+        {UIPriorityLevel >= 3 && (
+          <Button onClick={handleSiteCick}>Setting monitoring site</Button>
+        )}
+        {UIPriorityLevel >= 3 && (
+          <Button onClick={handleAnticipatedClick}>
+            Setting anticipated data input service type
+          </Button>
+        )}
+        {UIPriorityLevel >= 3 && (
+          <Button onClick={handleTriggeringClick}>
+            Setting triggering event
+          </Button>
+        )}
+        {UIPriorityLevel >= 2 && (
+          <Button onClick={handleReportsClick}>Reports and requests</Button>
+        )}
       </BottomRightContainer>
     </>
   );
