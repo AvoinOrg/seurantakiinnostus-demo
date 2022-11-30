@@ -27,7 +27,10 @@ export const StateProvider = (props) => {
   const [paramApiKey, setParamApiKey] = useState<string>('');
   const [paramApiId, setParamApiId] = useState<string>('');
   const [paramEditorApiPriorityLevel, setParamEditorApiPriorityLevel] =
-    useState<string | null>(null);
+    useState<number | null>(null);
+  const [UIPriorityLevel, setSetUIPriorityLevel] = useState<
+    Number | null | undefined
+  >(1);
   const [viewParams, setViewParamas] = useState<any>(null);
   const [extraParams, setExtraParams] = useState<any>(null);
 
@@ -72,7 +75,8 @@ export const StateProvider = (props) => {
           setParamApiKey(value);
           setApiKey(value);
         } else if (param === 'editorApiPriorityLevel') {
-          setParamEditorApiPriorityLevel(value);
+          setParamEditorApiPriorityLevel(Number(value));
+          setSetUIPriorityLevel(Number(value));
         } else if (param === 'time') {
           setSelectedDate(new Date(Number(value) * 1000));
         } else if (param === 'lat') {
@@ -104,9 +108,12 @@ export const StateProvider = (props) => {
         setPriority(1);
       } else {
         setPriority(priorityQuery.data);
+        if (paramEditorApiPriorityLevel == null) {
+          setSetUIPriorityLevel(priorityQuery.data);
+        }
       }
     }
-  }, [priorityQuery.isFetched]);
+  }, [priorityQuery.isFetched, paramEditorApiPriorityLevel]);
 
   const handleModalClick = (serviceId: string, widget: any) => {
     if (serviceId === modalService) {
@@ -175,6 +182,7 @@ export const StateProvider = (props) => {
     viewParams,
     updateSearchParams,
     extraParams,
+    UIPriorityLevel,
   };
 
   return (
