@@ -875,7 +875,7 @@
               for (var a in req.attributesA) {
                 var attr = req.attributesA[a];
                 var id = 'citobso311_input_' + code + '_' + attr.code;
-                console.log(attr.code);
+
                 var valjQ = '';
 
                 var valueHelps = '';
@@ -1579,8 +1579,8 @@
 
               if (opts.mapCenterLatLon != null) {
                 memo.lockmeCtrl.setActive(true);
-								memo.dragPan.setActive(false);
-								memo.keyboardPan.setActive(false);
+                memo.dragPan.setActive(false);
+                memo.keyboardPan.setActive(false);
               }
 
               if (opts.showQuestionnaire) {

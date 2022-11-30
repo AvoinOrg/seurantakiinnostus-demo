@@ -490,7 +490,6 @@ const SeurantaMap: React.FC<any> = () => {
         }
       });
 
-      console.log(items);
       setLoading(false);
       setObsPointItems(items);
     }
