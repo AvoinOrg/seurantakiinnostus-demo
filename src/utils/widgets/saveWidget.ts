@@ -4,7 +4,6 @@ const saveWidget = (apiKey, defaultValues, latLon, extraParams) => {
   const latLonJson = JSON.stringify(latLon);
   const defaultValuesJson = JSON.stringify(defaultValues);
   const serviceId = 'csepin_intereststatus_service_code_en_202209161148489';
-
   const widgetParams = `
       data-type="SingleServiceQuestionnaire"
       data-show-service_name="true"

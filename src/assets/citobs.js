@@ -984,6 +984,14 @@
                     valjQ = '#' + id;
                   } else if (attr.datatype == 'datetime') {
                     var now = new Date();
+
+                    if (
+                      opts.defaultVals &&
+                      opts.defaultVals[attr.code] != null
+                    ) {
+                      now = new Date(Number(opts.defaultVals[attr.code]) * 1000);
+                    }
+
                     var nowStr =
                       now.getFullYear() +
                       '-' +

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
 import { Marker, Popup, Circle, GeoJSON } from 'react-leaflet';
+import { getUnixTime } from 'date-fns';
 
 import { theme } from '../styles';
 import { tsToString } from '../utils/helpers';
@@ -27,6 +28,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
     controlUiEnabled,
     extraParams,
     UIPriorityLevel,
+    selectedDate,
   }: any = useContext(StateContext);
   const position: any = [props.ob.lat, props.ob.long];
 
@@ -135,6 +137,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
       {
         csepin_intereststatus_s_number_en_202209161148415: renderSettings.s,
         csepin_intereststatus_P_number_202209161148417: renderSettings.p,
+        observationtime: getUnixTime(selectedDate),
         // csepin_intereststatus_reqscname_string_en_202209161148412:
         //   renderSettings.code,
         csepin_intereststatus_reqsc_string_en_202209161148414:
