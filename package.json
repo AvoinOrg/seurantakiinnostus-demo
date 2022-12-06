@@ -12,7 +12,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "license": "MIT",
+  "license": "EUPL v1.2",
   "devDependencies": {
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.13",
