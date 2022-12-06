@@ -120,7 +120,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
 
     settings.color = color;
     setRenderSettings(settings);
-  }, []);
+  }, [props.ob]);
 
   const handleMonClick = () => {
     const newWidget = monWidget(
