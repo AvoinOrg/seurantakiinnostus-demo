@@ -174,22 +174,22 @@ const SeurantaMap: React.FC<any> = () => {
       const obsFiltered = sliceArrayAtValue(obs, selectedDate, 'date');
       const obsPointsFiltered = sliceArrayAtValue(
         obsPoints.data,
-        selectedDate,
+        dateLimit,
         'date',
       );
       const monInterestDefsFiltered = sliceArrayAtValue(
         monInterestDefs.data,
-        selectedDate,
+        dateLimit,
         'date',
       );
       const monInterestsFiltered = sliceArrayAtValue(
         monInterests.data,
-        selectedDate,
+        dateLimit,
         'date',
       );
       const monInterestTriggersFiltered = sliceArrayAtValue(
         monInterestTriggers.data,
-        selectedDate,
+        dateLimit,
         'date',
       );
 
