@@ -5,7 +5,7 @@ import { Marker, Popup, Circle, GeoJSON } from 'react-leaflet';
 import { getUnixTime } from 'date-fns';
 
 import { theme } from '../styles';
-import { tsToString } from '../utils/helpers';
+import { tsToString, tsToCitobString } from '../utils/helpers';
 import { StateContext } from '../components/State';
 import monWidget from '../utils/widgets/monWidget';
 import saveWidget from '../utils/widgets/saveWidget';
@@ -132,18 +132,24 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
   };
 
   const handleSaveClick = () => {
+    const defaultValues: any = {
+      csepin_intereststatus_s_number_en_202209161148415: renderSettings.s,
+      csepin_intereststatus_P_number_202209161148417: renderSettings.p,
+      observationtime: getUnixTime(selectedDate),
+      // csepin_intereststatus_reqscname_string_en_202209161148412:
+      //   renderSettings.code,
+      csepin_intereststatus_reqsc_string_en_202209161148414: props.ob.serviceId,
+      csepin_intereststatus_siteid_string_en_202209161148418: props.ob.id,
+    };
+
+    if (props.ob.t0 != undefined) {
+      defaultValues.csepin_intereststatus_to_string_en_202209161148420 =
+        tsToCitobString(props.ob.t0);
+    }
+
     const newWidget = saveWidget(
       apiKey,
-      {
-        csepin_intereststatus_s_number_en_202209161148415: renderSettings.s,
-        csepin_intereststatus_P_number_202209161148417: renderSettings.p,
-        observationtime: getUnixTime(selectedDate),
-        // csepin_intereststatus_reqscname_string_en_202209161148412:
-        //   renderSettings.code,
-        csepin_intereststatus_reqsc_string_en_202209161148414:
-          props.ob.serviceId,
-        csepin_intereststatus_siteid_string_en_202209161148418: props.ob.id,
-      },
+      defaultValues,
       position,
       extraParams.citobsParams,
     );

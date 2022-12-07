@@ -79,6 +79,22 @@ export const tsToString = (ts: number): string => {
   return s;
 };
 
+export const tsToCitobString = (ts: number): string => {
+  const d = new Date(ts);
+  const s =
+    d.getDate() +
+    '/' +
+    (d.getMonth() + 1) +
+    '/' +
+    d.getFullYear() +
+    '_' +
+    d.getHours() +
+    ':' +
+    d.getMinutes();
+  return s;
+};
+
+
 export const sliceArrayAtValue = (arr: any[], val: any, key: any) => {
   const index = arr.findIndex((item) => item[key] <= val);
   if (index === -1) {
