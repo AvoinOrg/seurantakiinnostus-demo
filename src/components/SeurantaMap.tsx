@@ -464,12 +464,20 @@ const SeurantaMap: React.FC<any> = () => {
           }
 
           // If either keyword or hashtag matches, add to results. Or, if no keywords or hashtags are defined, add to results.
-          let isFilteredByHashtags = true;
-          let isFilteredByKeywords = true;
+          itemData.serviceKeywords = itemData.serviceKeywords.map((element) => {
+            return element.toLowerCase();
+          });
+
+          itemData.hashtags = itemData.hashtags.map((element) => {
+            return element.toLowerCase();
+          });
+
+          let containsHashtags = false;
+          let containsKeywords = false;
 
           if (extraParams.hashtags.length > 0) {
             if (arrIncludesAny(itemData.hashtags, extraParams.hashtags)) {
-              isFilteredByHashtags = false;
+              containsHashtags = true;
             }
           }
 
@@ -477,21 +485,20 @@ const SeurantaMap: React.FC<any> = () => {
             if (
               arrIncludesAny(itemData.serviceKeywords, extraParams.keywords)
             ) {
-              isFilteredByKeywords = false;
+              containsKeywords = true;
             }
           }
 
-          if (
-            !isFilteredByHashtags ||
-            !isFilteredByKeywords ||
-            (extraParams.keywords.length === 0 &&
-              extraParams.hashtags.length === 0)
+          if (containsKeywords || containsHashtags) {
+            items.push(itemData);
+          } else if (
+            extraParams.keywords.length === 0 &&
+            extraParams.hashtags.length === 0
           ) {
             items.push(itemData);
           }
         }
       });
-
       setLoading(false);
       setObsPointItems(items);
     }

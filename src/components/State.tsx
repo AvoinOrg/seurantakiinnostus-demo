@@ -86,9 +86,13 @@ export const StateProvider = (props) => {
         } else if (param === 'zoom') {
           newViewParams.zoom = Number(value);
         } else if (param === 'hashtags') {
-          extraUrlParams.hashtags = value.split(',');
+          extraUrlParams.hashtags = value.split(',').map((element) => {
+            return element.toLowerCase();
+          });
         } else if (param === 'keywords') {
-          extraUrlParams.keywords = value.split(',');
+          extraUrlParams.keywords = value.split(',').map((element) => {
+            return element.toLowerCase();
+          });
         } else {
           extraUrlParams.citobsParams[param] = value;
         }
