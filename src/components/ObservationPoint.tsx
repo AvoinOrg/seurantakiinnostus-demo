@@ -142,9 +142,9 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
       csepin_intereststatus_siteid_string_en_202209161148418: props.ob.id,
     };
 
-    if (props.ob.t0 != undefined) {
+    if (props.ob.lastObDate != undefined) {
       defaultValues.csepin_intereststatus_to_string_en_202209161148420 =
-        tsToCitobString(props.ob.t0);
+        tsToCitobString(props.ob.lastObDate);
     }
 
     const newWidget = saveWidget(
