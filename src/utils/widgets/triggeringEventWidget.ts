@@ -1,6 +1,7 @@
 import baseWidget from './baseWidget';
 
-const triggeringEventWidget = (apiKey, extraParams) => {
+const triggeringEventWidget = (apiKey, latLon, extraParams) => {
+  const latLonJson = JSON.stringify(latLon);
   const serviceId = 'monint_startevent_service_code_201912031300509';
 
   const widgetParams = `
@@ -17,6 +18,7 @@ const triggeringEventWidget = (apiKey, extraParams) => {
     data-obses-cluster="true"
     data-show-questionnaire="true"
     data-images-count="2"
+    data-map-center-lat-lon=${latLonJson}
   `;
 
   return baseWidget(serviceId, apiKey, widgetParams, extraParams);

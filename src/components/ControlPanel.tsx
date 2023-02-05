@@ -25,25 +25,42 @@ function ControlPanel(): React.ReactElement {
     apiKey,
     extraParams,
     UIPriorityLevel,
+    viewParams,
   }: any = useContext(StateContext);
 
   const handleAnticipatedClick = () => {
-    const newWidget = anticipatedInputWidget(apiKey, extraParams.citobsParams);
+    const newWidget = anticipatedInputWidget(
+      apiKey,
+      [viewParams.lat, viewParams.lon],
+      extraParams.citobsParams,
+    );
     handleModalClick('anticipated', newWidget);
   };
 
   const handleReportsClick = () => {
-    const newWidget = reportsWidget(apiKey, extraParams.citobsParams);
+    const newWidget = reportsWidget(
+      apiKey,
+      [viewParams.lat, viewParams.lon],
+      extraParams.citobsParams,
+    );
     handleModalClick('reports', newWidget);
   };
 
   const handleSiteCick = () => {
-    const newWidget = siteWidget(apiKey, extraParams.citobsParams);
+    const newWidget = siteWidget(
+      apiKey,
+      [viewParams.lat, viewParams.lon],
+      extraParams.citobsParams,
+    );
     handleModalClick('site', newWidget);
   };
 
   const handleTriggeringClick = () => {
-    const newWidget = triggeringEventWidget(apiKey, extraParams.citobsParams);
+    const newWidget = triggeringEventWidget(
+      apiKey,
+      [viewParams.lat, viewParams.lon],
+      extraParams.citobsParams,
+    );
     handleModalClick('triggering', newWidget);
   };
 

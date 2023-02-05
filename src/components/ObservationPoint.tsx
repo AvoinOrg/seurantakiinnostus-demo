@@ -29,6 +29,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
     extraParams,
     UIPriorityLevel,
     selectedDate,
+    viewParams,
   }: any = useContext(StateContext);
   const position: any = [props.ob.lat, props.ob.long];
 
@@ -126,6 +127,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
     const newWidget = monWidget(
       props.ob.serviceId,
       apiKey,
+      [viewParams.lat, viewParams.lon],
       extraParams.citobsParams,
     );
     handleModalClick(props.ob.serviceId, newWidget);

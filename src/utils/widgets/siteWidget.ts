@@ -1,6 +1,7 @@
 import baseWidget from './baseWidget';
 
-const siteWidget = (apiKey, extraParams) => {
+const siteWidget = (apiKey, latLon, extraParams) => {
+  const latLonJson = JSON.stringify(latLon);
   const serviceId = 'csepin_staticobservationsite_service_code_202111191120569';
 
   const widgetParams = `
@@ -17,6 +18,7 @@ const siteWidget = (apiKey, extraParams) => {
     data-obses-cluster="true"
     data-show-questionnaire="true"
     data-images-count="2"
+    data-map-center-lat-lon=${latLonJson}
   `;
 
   return baseWidget(serviceId, apiKey, widgetParams, extraParams);
