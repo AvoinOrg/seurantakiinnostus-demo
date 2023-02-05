@@ -344,7 +344,7 @@
               obsesCluster: 'false',
               allowImages: 0,
               defaultVals: {},
-              mapCenterLatLon: null,
+              mapCenterLatLonZoom: null,
             };
 
             //get attributes
@@ -463,9 +463,9 @@
                     } catch (err) {
                       console.log(err);
                     }
-                  } else if (an.indexOf('data-map-center-lat-lon') == 0) {
+                  } else if (an.indexOf('data-map-center-lat-lon-zoom') == 0) {
                     try {
-                      opts.mapCenterLatLon = JSON.parse(
+                      opts.mapCenterLatLonZoom = JSON.parse(
                         av.split("'").join('"'),
                       );
                     } catch (err) {
@@ -989,7 +989,9 @@
                       opts.defaultVals &&
                       opts.defaultVals[attr.code] != null
                     ) {
-                      now = new Date(Number(opts.defaultVals[attr.code]) * 1000);
+                      now = new Date(
+                        Number(opts.defaultVals[attr.code]) * 1000,
+                      );
                     }
 
                     var nowStr =
@@ -1487,7 +1489,7 @@
                 type: 'geoloc',
                 name: 'Sijaintisi',
                 show: true,
-                center: opts.mapCenterLatLon == null,
+                center: opts.mapCenterLatLonZoom == null,
                 zoom: 15,
                 track: false,
               });
@@ -1497,10 +1499,10 @@
               var lon = 25.5;
               var zoom = 5;
 
-              if (opts.mapCenterLatLon != null) {
-                lat = opts.mapCenterLatLon[0];
-                lon = opts.mapCenterLatLon[1];
-                zoom = 16;
+              if (opts.mapCenterLatLonZoom != null) {
+                lat = opts.mapCenterLatLonZoom[0];
+                lon = opts.mapCenterLatLonZoom[1];
+                zoom = opts.mapCenterLatLonZoom[2];
               }
 
               map = ol3_jwMakeMap({
@@ -1585,7 +1587,7 @@
                 },
               });
 
-              if (opts.mapCenterLatLon != null) {
+              if (opts.mapCenterLatLonZoom != null) {
                 memo.lockmeCtrl.setActive(true);
                 memo.dragPan.setActive(false);
                 memo.keyboardPan.setActive(false);
