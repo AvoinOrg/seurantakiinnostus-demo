@@ -128,6 +128,7 @@ const InfoContainer: any = styled.div`
   flex-direction: column;
   margin: 10px 0 10px 0;
   align-items: flex-end;
+  pointer-events: none;
 `;
 
 const InfoRow: any = styled.div`
@@ -170,6 +171,10 @@ const TopRightContainer: any = styled.div`
   line-height: 30px;
   text-indent: 1px;
   justify-content: flex-end;
+  pointer-events: none;
+  > * {
+    pointer-events: auto;
+  }
 `;
 
 const BottomRightContainer: any = styled.div`
