@@ -2,7 +2,7 @@
 
 This is an app that calculates and shows the level of interest of getting observations near determined points on a map. It uses SYKE's CitobsDB-system.
 
-Deployed here: <https://avoinorg.github.io/seurantakiinnostus-demo/>.
+Deployed here: <https://seuranta.avoin.org>.
 
 Created using React, TypeScript, and Leaflet.
 
