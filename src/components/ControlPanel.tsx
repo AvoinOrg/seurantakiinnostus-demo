@@ -73,6 +73,11 @@ function ControlPanel(): React.ReactElement {
                 zIndex: 2500,
               },
             }}
+            DialogProps={{
+              sx: {
+                zIndex: 2500,
+              },
+            }}
             renderInput={(params) => (
               <TextField
                 sx={{
