@@ -133,7 +133,7 @@ const InfoContainer: any = styled.div`
   flex-direction: column;
   margin: 10px 0 10px 0;
   align-items: flex-end;
-  pointer-events: none;
+  pointer-events: none !important;
 `;
 
 const InfoRow: any = styled.div`
