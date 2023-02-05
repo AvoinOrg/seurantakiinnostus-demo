@@ -127,7 +127,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
     const newWidget = monWidget(
       props.ob.serviceId,
       apiKey,
-      [viewParams.lat, viewParams.lon],
+      [viewParams.lat, viewParams.lon, viewParams.zoom],
       extraParams.citobsParams,
     );
     handleModalClick(props.ob.serviceId, newWidget);
@@ -152,7 +152,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
     const newWidget = saveWidget(
       apiKey,
       defaultValues,
-      position,
+      [...position, 16],
       extraParams.citobsParams,
     );
     handleModalClick(props.ob.serviceId, newWidget);

@@ -1,8 +1,7 @@
 import baseWidget from './baseWidget';
 
-const monWidget = (serviceId: string, apiKey, latLon, extraParams) => {
-  const latLonJson = JSON.stringify(latLon);
-  console.log(latLonJson)
+const monWidget = (serviceId: string, apiKey, latLonZoom, extraParams) => {
+  const latLonZoomJson = JSON.stringify(latLonZoom);
   const widgetParams = `
     data-type="SingleServiceQuestionnaire"
     data-show-service_name="true"
@@ -17,7 +16,7 @@ const monWidget = (serviceId: string, apiKey, latLon, extraParams) => {
     data-obses-cluster="true"
     data-show-questionnaire="true"
     data-images-count="2"
-    data-map-center-lat-lon=${latLonJson}
+    data-map-center-lat-lon-zoom=${latLonZoomJson}
   `;
 
   return baseWidget(serviceId, apiKey, widgetParams, extraParams);

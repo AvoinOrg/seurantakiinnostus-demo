@@ -1,7 +1,7 @@
 import baseWidget from './baseWidget';
 
-const anticipatedInputWidget = (apiKey, latLon, extraParams) => {
-  const latLonJson = JSON.stringify(latLon);
+const anticipatedInputWidget = (apiKey, latLonZoom, extraParams) => {
+  const latLonZoomJson = JSON.stringify(latLonZoom);
 
   const serviceId = 'monint_basicsite_service_code_201911180952014';
 
@@ -19,7 +19,7 @@ const anticipatedInputWidget = (apiKey, latLon, extraParams) => {
     data-obses-cluster="true"
     data-show-questionnaire="true"
     data-images-count="2"
-    data-map-center-lat-lon=${latLonJson}
+    data-map-center-lat-lon-zoom=${latLonZoomJson}
   `;
 
   return baseWidget(serviceId, apiKey, widgetParams, extraParams);

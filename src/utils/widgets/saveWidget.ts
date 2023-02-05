@@ -1,7 +1,7 @@
 import baseWidget from './baseWidget';
 
-const saveWidget = (apiKey, defaultValues, latLon, extraParams) => {
-  const latLonJson = JSON.stringify(latLon);
+const saveWidget = (apiKey, defaultValues, latLonZoom, extraParams) => {
+  const latLonZoomJson = JSON.stringify(latLonZoom);
   const defaultValuesJson = JSON.stringify(defaultValues);
   const serviceId = 'csepin_intereststatus_service_code_en_202209161148489';
   const widgetParams = `
@@ -19,7 +19,7 @@ const saveWidget = (apiKey, defaultValues, latLon, extraParams) => {
       data-show-questionnaire="true"
       data-images-count="0"
       data-observation_tags="#csepin, #monitoringinterest, #taskscore, #intereststatus, #api26, #taskscorecontroluipublic"
-      data-map-center-lat-lon=${latLonJson}
+      data-map-center-lat-lon-zoom=${latLonZoomJson}
       data-default-values=${defaultValuesJson}
     `;
 

@@ -1,7 +1,7 @@
 import baseWidget from './baseWidget';
 
-const reportsWidget = (apiKey, latLon, extraParams) => {
-  const latLonJson = JSON.stringify(latLon);
+const reportsWidget = (apiKey, latLonZoom, extraParams) => {
+  const latLonZoomJson = JSON.stringify(latLonZoom);
   const serviceId = 'csepin_localreport_service_code_en_202210171609144';
 
   const widgetParams = `
@@ -18,7 +18,7 @@ const reportsWidget = (apiKey, latLon, extraParams) => {
     data-obses-cluster="true"
     data-show-questionnaire="true"
     data-images-count="2"
-    data-map-center-lat-lon=${latLonJson}
+    data-map-center-lat-lon-zoom=${latLonZoomJson}
   `;
 
   return baseWidget(serviceId, apiKey, widgetParams, extraParams);

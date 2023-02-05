@@ -31,7 +31,7 @@ function ControlPanel(): React.ReactElement {
   const handleAnticipatedClick = () => {
     const newWidget = anticipatedInputWidget(
       apiKey,
-      [viewParams.lat, viewParams.lon],
+      [viewParams.lat, viewParams.lon, viewParams.zoom],
       extraParams.citobsParams,
     );
     handleModalClick('anticipated', newWidget);
@@ -40,7 +40,7 @@ function ControlPanel(): React.ReactElement {
   const handleReportsClick = () => {
     const newWidget = reportsWidget(
       apiKey,
-      [viewParams.lat, viewParams.lon],
+      [viewParams.lat, viewParams.lon, viewParams.zoom],
       extraParams.citobsParams,
     );
     handleModalClick('reports', newWidget);
@@ -49,7 +49,7 @@ function ControlPanel(): React.ReactElement {
   const handleSiteCick = () => {
     const newWidget = siteWidget(
       apiKey,
-      [viewParams.lat, viewParams.lon],
+      [viewParams.lat, viewParams.lon, viewParams.zoom],
       extraParams.citobsParams,
     );
     handleModalClick('site', newWidget);
@@ -58,7 +58,7 @@ function ControlPanel(): React.ReactElement {
   const handleTriggeringClick = () => {
     const newWidget = triggeringEventWidget(
       apiKey,
-      [viewParams.lat, viewParams.lon],
+      [viewParams.lat, viewParams.lon, viewParams.zoom],
       extraParams.citobsParams,
     );
     handleModalClick('triggering', newWidget);
