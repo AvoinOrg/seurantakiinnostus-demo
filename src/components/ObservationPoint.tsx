@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import L from 'leaflet';
@@ -9,6 +10,7 @@ import { tsToString, tsToCitobString } from '../utils/helpers';
 import { StateContext } from '../components/State';
 import monWidget from '../utils/widgets/monWidget';
 import saveWidget from '../utils/widgets/saveWidget';
+import useIsMobile from '../utils/useIsMobile';
 
 interface Props {
   ob: any;
@@ -21,6 +23,7 @@ const LEVEL_OF_NEED = ['very low', 'low', 'medium', 'high', 'very high'];
 const ObservationPoint: React.FC<Props> = (props: Props) => {
   const [renderSettings, setRenderSettings] = useState<any>(null);
   const [drawIndicator, setDrawIndicator] = useState<boolean>(false);
+  const isMobile = useIsMobile();
 
   const {
     handleModalClick,
@@ -63,7 +66,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
         settings.levelOfNeed = LEVEL_OF_NEED[index];
         size = 50 + index * 4;
       } else {
-        color = "gray";
+        color = 'gray';
         settings.levelOfNeed = 'none';
         size = 40;
       }
@@ -208,25 +211,42 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
                 <Button onClick={handleMonClick}>Add observation</Button>
               )}
               <hr style={{ margin: '15px 0 15px 0' }} />
-              {props.ob.serviceName != null && (
-                <Field>
-                  <b>Monitoring service name:</b>
-                  {'  ' + props.ob.serviceName}
-                </Field>
-              )}
-              {props.ob.serviceId != null && (
-                <Field>
-                  <b>Monitoring service id:</b>
-                  {'  ' + props.ob.serviceId}
-                </Field>
-              )}
-              {props.ob.serviceDescription != null && (
-                <Field>
-                  <b>Monitoring service description:</b>
-                  {'  ' + props.ob.serviceDescription}
-                </Field>
-              )}
-              {/* {props.ob.serviceKeywords != null && (
+              {isMobile ? (
+                <BigField>
+                  <p>
+                    <b>
+                      {props.ob.serviceName && <p>{props.ob.serviceName}</p>}
+                    </b>
+                    <p>
+                      {props.ob.s != null &&
+                        _.round(props.ob.s, 0) + ' points '}
+
+                      {renderSettings.p != null &&
+                        '(' + renderSettings.p + '%)'}
+                    </p>
+                  </p>
+                </BigField>
+              ) : (
+                <>
+                  {props.ob.serviceName != null && (
+                    <Field>
+                      <b>Monitoring service name:</b>
+                      {'  ' + props.ob.serviceName}
+                    </Field>
+                  )}
+                  {props.ob.serviceId != null && (
+                    <Field>
+                      <b>Monitoring service id:</b>
+                      {'  ' + props.ob.serviceId}
+                    </Field>
+                  )}
+                  {props.ob.serviceDescription != null && (
+                    <Field>
+                      <b>Monitoring service description:</b>
+                      {'  ' + props.ob.serviceDescription}
+                    </Field>
+                  )}
+                  {/* {props.ob.serviceKeywords != null && (
                 <Field>
                   <b>Monitoring service keywords:</b>
                   {'  ' + props.ob.serviceKeywords.join(', ')}
@@ -238,76 +258,78 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
                   {'  ' + props.ob.hashtags.join(', ')}
                 </Field>
               )} */}
-              {props.ob.created != null && (
-                <Field>
-                  <b>Beginning of monitoring interest:</b>
-                  {(() => {
-                    return '  ' + tsToString(props.ob.created);
-                  })()}
-                </Field>
-              )}
-              {props.ob.t0 != null && props.ob.created != null && (
-                <Field>
-                  <b>Latest triggering of interest:</b>
-                  {(() => {
-                    if (props.ob.trigger) {
-                      return '  ' + tsToString(props.ob.t0);
-                    } else {
-                      return '  ---';
-                    }
-                  })()}
-                </Field>
-              )}
-              {props.ob.s != null && (
-                <Field>
-                  <b>Latest observation:</b>
-                  {(() => {
-                    if (props.ob.lastObDate != null) {
-                      return '  ' + tsToString(props.ob.lastObDate);
-                    } else {
-                      return '  ---';
-                    }
-                  })()}
-                </Field>
-              )}
-              {props.ob.count != null && (
-                <Field>
-                  <b>
-                    Observations in the area after the beginning of monitoring
-                    interest:
-                  </b>
-                  {'  ' + props.ob.count}
-                </Field>
-              )}
-              {renderSettings.s != null && (
-                <Field>
-                  <b>Monitoring interest (S):</b>
-                  {'  ' + renderSettings.s.toFixed(2)}
-                </Field>
-              )}
-              {renderSettings.p != null && (
-                <Field>
-                  <b>Scaled monitoring interest (P):</b>
-                  {'  ' + renderSettings.p.toFixed(2) + '%'}
-                </Field>
-              )}
-              {props.ob.phase != null && (
-                <Field>
-                  <b>Current phase of monitoring interest:</b>
-                  {'  ' +
-                    (() => {
-                      switch (renderSettings.phase) {
-                        case 'validation':
-                          return 'validation';
-                        case 'similarity':
-                          return 'similarity';
-                        case 'reobservation':
-                          return 'reobservation';
-                        default:
-                          return 'basic';
-                      }
-                    })()}
-                </Field>
+                  {props.ob.created != null && (
+                    <Field>
+                      <b>Beginning of monitoring interest:</b>
+                      {(() => {
+                        return '  ' + tsToString(props.ob.created);
+                      })()}
+                    </Field>
+                  )}
+                  {props.ob.t0 != null && props.ob.created != null && (
+                    <Field>
+                      <b>Latest triggering of interest:</b>
+                      {(() => {
+                        if (props.ob.trigger) {
+                          return '  ' + tsToString(props.ob.t0);
+                        } else {
+                          return '  ---';
+                        }
+                      })()}
+                    </Field>
+                  )}
+                  {props.ob.s != null && (
+                    <Field>
+                      <b>Latest observation:</b>
+                      {(() => {
+                        if (props.ob.lastObDate != null) {
+                          return '  ' + tsToString(props.ob.lastObDate);
+                        } else {
+                          return '  ---';
+                        }
+                      })()}
+                    </Field>
+                  )}
+                  {props.ob.count != null && (
+                    <Field>
+                      <b>
+                        Observations in the area after the beginning of
+                        monitoring interest:
+                      </b>
+                      {'  ' + props.ob.count}
+                    </Field>
+                  )}
+                  {renderSettings.s != null && (
+                    <Field>
+                      <b>Monitoring interest (S):</b>
+                      {'  ' + renderSettings.s.toFixed(2)}
+                    </Field>
+                  )}
+                  {renderSettings.p != null && (
+                    <Field>
+                      <b>Scaled monitoring interest (P):</b>
+                      {'  ' + renderSettings.p.toFixed(2) + '%'}
+                    </Field>
+                  )}
+                  {props.ob.phase != null && (
+                    <Field>
+                      <b>Current phase of monitoring interest:</b>
+                      {'  ' +
+                        (() => {
+                          switch (renderSettings.phase) {
+                            case 'validation':
+                              return 'validation';
+                            case 'similarity':
+                              return 'similarity';
+                            case 'reobservation':
+                              return 'reobservation';
+                            default:
+                              return 'basic';
+                          }
+                        })()}
+                    </Field>
+                  )}
+                </>
               )}
               {props.ob.serviceId &&
                 controlUiEnabled &&
@@ -342,6 +364,12 @@ const Field: any = styled.p`
   font-size: 0.8rem;
   line-height: 1rem;
   margin: 8px 0 0 0 !important;
+`;
+
+const BigField: any = styled.p`
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  margin: 8px 0 8px 0 !important;
 `;
 
 const Button: any = styled.p`
