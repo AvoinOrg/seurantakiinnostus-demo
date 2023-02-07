@@ -10,7 +10,7 @@ export default function LocateControl() {
   useEffect(() => {
     // geo locate props
     const locateOptions = {
-      position: 'topright',
+      position: 'topleft',
       maxZoom: 19,
       strings: {
         title: 'Locate me',
