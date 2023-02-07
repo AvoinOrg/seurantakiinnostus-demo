@@ -1148,7 +1148,7 @@
 
               //output += '<input id="citobso311_submit_' + id + '" type="submit">';
               output +=
-                '<div class="slide-submit"><div class="slide-submit-text">LÃ¤hetÃ¤ pyyhkÃ¤isemÃ¤llÃ¤</div><div class="slide-submit-thumb">Â»</div></div>';
+                '<div class="slide-submit"><div class="slide-submit-text">Lähetä pyyhkäisemällä</div><div class="slide-submit-thumb">»</div></div>';
             }
 
             output += '</form></div>';
