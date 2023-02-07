@@ -32,6 +32,7 @@ export const StateProvider = (props) => {
     Number | null | undefined
   >(1);
   const [viewParams, setViewParamas] = useState<any>(null);
+  const viewParamsRef = React.useRef<any>({});
   const [extraParams, setExtraParams] = useState<any>(null);
 
   const [apiKey, setApiKey] = useState<string>(API_KEY);
@@ -119,6 +120,10 @@ export const StateProvider = (props) => {
     }
   }, [priorityQuery.isFetched, paramEditorApiPriorityLevel]);
 
+  useEffect(() => {
+    viewParamsRef.current = viewParams;
+  }, [viewParams]);
+
   const handleModalClick = (serviceId: string, widget: any) => {
     if (serviceId === modalService) {
     } else {
@@ -146,6 +151,18 @@ export const StateProvider = (props) => {
   };
 
   const updateSearchParams = (params: any) => {
+    if (params.lat != null) {
+      viewParamsRef.current.lat = params.lat;
+    }
+    if (params.lon != null) {
+      viewParamsRef.current.lon = params.lon;
+    }
+    if (params.zoom != null) {
+      viewParamsRef.current.zoom = params.zoom;
+    }
+
+    viewParamsRef.current = params;
+
     for (const [key, value] of Object.entries(params)) {
       if (searchParams.get(key) != null) {
         if (value === '' || value == null) {
@@ -184,6 +201,7 @@ export const StateProvider = (props) => {
     selectedDate,
     setSelectedDate,
     viewParams,
+    viewParamsRef,
     updateSearchParams,
     extraParams,
     UIPriorityLevel,
