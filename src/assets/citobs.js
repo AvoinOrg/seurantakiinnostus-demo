@@ -1976,11 +1976,11 @@
             target
               .find('.citobso311_questionnaire_container')
               .append('<p></p>');
-            target
-              .find('.citobso311_questionnaire_container')
-              .append(
-                '<button class="ui-button ui-widget ui-corner-all" id="citobso311_another_observation">Tallenna toinen havainto</button>',
-              );
+            // target
+            //   .find('.citobso311_questionnaire_container')
+            //   .append(
+            //     '<button class="ui-button ui-widget ui-corner-all" id="citobso311_another_observation">Tallenna toinen havainto</button>',
+            //   );
           },
           error: function (err) {
             console.log(err);
