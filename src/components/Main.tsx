@@ -6,6 +6,7 @@ import { StateContext } from '../components/State';
 import { theme } from '../styles';
 import Loading from './Loading';
 import SeurantaMap from './SeurantaMap';
+import LocateControl from './LocateControl';
 
 const defaultPosition: any = [65.449704, 26.839269];
 const defaultZoom = 6;
@@ -51,6 +52,7 @@ const Main: React.FC<Props> = ({}) => {
                 : defaultPosition
             }
           >
+            <LocateControl />
             {extraParams && <SeurantaMap></SeurantaMap>}
           </MapContainerStyled>
         )}
