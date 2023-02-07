@@ -1199,8 +1199,8 @@
               jQuery(
                 '.citobso311_questionnaire_container .slide-submit',
               ).slideToSubmit({
-                errorText: 'Tarkista pakolliset kentÃ¤t!', // Shown if fields are invalid & browser doesn't have built-in tooltips
-                successText: 'LÃ¤hetetÃ¤Ã¤n...', // Shown before submitting
+                errorText: 'Tarkista pakolliset kentät!', // Shown if fields are invalid & browser doesn't have built-in tooltips
+                successText: 'Lähetetään...', // Shown before submitting
                 submitDelay: 500, // Delay for showing successText
                 graceZone: 100, // Pixels from the right that is accepted as a full side
               });
@@ -1946,7 +1946,7 @@
           },
           error: function (err) {
             jQuery(this).html(
-              'Kyselyn lataaminen CitObs-tietojÃ¤rjestelmÃ¤stÃ¤ ei onnistunut. Ole hyvÃ¤, ja kokeile myÃ¶hemmin uudelleen.',
+              'Kyselyn lataaminen CitObs-tietojärjestelmästä ei onnistunut. Ole hyvä, ja kokeile myöhemmin uudelleen.',
             );
           },
         });
