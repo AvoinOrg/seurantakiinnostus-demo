@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import L from 'leaflet';
 import { Marker, Popup, Circle, GeoJSON } from 'react-leaflet';
 import { getUnixTime } from 'date-fns';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { theme } from '../styles';
 import { tsToString, tsToCitobString } from '../utils/helpers';
@@ -34,48 +35,53 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
     selectedDate,
     viewParamsRef,
   }: any = useContext(StateContext);
-  const position: any = [props.ob.lat, props.ob.long];
+
+  let position: any = [null, null];
+  if (props.ob) {
+    position = [props.ob.lat, props.ob.long];
+  }
 
   useEffect(() => {
     let color: string;
     let size: number;
     const settings: any = {};
-    if (props.ob.radius !== undefined) {
-      let p = props.ob.s;
-      !props.ob.Spmin && (props.ob.Spmin = 0);
-      !props.ob.Spmax && (props.ob.Spmax = 100);
+    try {
+      if (props.ob.radius !== undefined) {
+        let p = props.ob.s;
+        !props.ob.Spmin && (props.ob.Spmin = 0);
+        !props.ob.Spmax && (props.ob.Spmax = 100);
 
-      const diff = Math.abs(props.ob.Spmin - props.ob.Spmax);
-      if (props.ob.Spmin <= props.ob.Spmax) {
-        p = p - props.ob.Spmin;
-        p = Math.max(Math.min(p / diff, 1), 0);
-      } else {
-        p = p - props.ob.Spmax;
-        p = Math.max(Math.min(1 - p / diff, 1), 0);
-      }
+        const diff = Math.abs(props.ob.Spmin - props.ob.Spmax);
+        if (props.ob.Spmin <= props.ob.Spmax) {
+          p = p - props.ob.Spmin;
+          p = Math.max(Math.min(p / diff, 1), 0);
+        } else {
+          p = p - props.ob.Spmax;
+          p = Math.max(Math.min(1 - p / diff, 1), 0);
+        }
 
-      p *= 100;
+        p *= 100;
 
-      settings.p = p;
-      settings.s = props.ob.s;
-      settings.phase = props.ob.phase;
-      const index = Math.max(Math.min(Math.floor(p / (100 / 5)), 4), 0);
+        settings.p = p;
+        settings.s = props.ob.s;
+        settings.phase = props.ob.phase;
+        const index = Math.max(Math.min(Math.floor(p / (100 / 5)), 4), 0);
 
-      if (p > 0) {
-        color = COLORS[index];
-        settings.levelOfNeed = LEVEL_OF_NEED[index];
-        size = 50 + index * 4;
-      } else {
-        color = 'gray';
-        settings.levelOfNeed = 'none';
-        size = 40;
-      }
+        if (p > 0) {
+          color = COLORS[index];
+          settings.levelOfNeed = LEVEL_OF_NEED[index];
+          size = 50 + index * 4;
+        } else {
+          color = 'gray';
+          settings.levelOfNeed = 'none';
+          size = 40;
+        }
 
-      settings.icon = L.divIcon({
-        className: 'pin',
-        iconAnchor: [size / 2, size - 9],
-        popupAnchor: [0, (size - 20) * -1],
-        html: `<svg xmlns="http://www.w3.org/2000/svg" 
+        settings.icon = L.divIcon({
+          className: 'pin',
+          iconAnchor: [size / 2, size - 9],
+          popupAnchor: [0, (size - 20) * -1],
+          html: `<svg xmlns="http://www.w3.org/2000/svg" 
             width="${size}" 
             height="${size}" 
             viewBox="0 0 24 24"
@@ -88,16 +94,16 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
             class="feather feather-map-pin">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
             <circle cx="12" cy="10" r="3"></circle></svg>`,
-      });
-    } else {
-      size = 44;
-      color = NO_COLOR;
-      settings.levelOfNeed = 'not specified';
-      settings.icon = L.divIcon({
-        className: 'pin',
-        iconAnchor: [size / 2, size / 2],
-        popupAnchor: [0, -10],
-        html: `<svg xmlns="http://www.w3.org/2000/svg" 
+        });
+      } else {
+        size = 44;
+        color = NO_COLOR;
+        settings.levelOfNeed = 'not specified';
+        settings.icon = L.divIcon({
+          className: 'pin',
+          iconAnchor: [size / 2, size / 2],
+          popupAnchor: [0, -10],
+          html: `<svg xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 512 512"
           width="${size}" 
           height="${size}"
@@ -106,10 +112,13 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
           stroke-width="1" 
           stroke-linecap="round"
           ><path d="M405 136.798L375.202 107 256 226.202 136.798 107 107 136.798 226.202 256 107 375.202 136.798 405 256 285.798 375.202 405 405 375.202 285.798 256z"/></svg>`,
-      });
+        });
+      }
+      settings.color = color;
+    } catch (e) {
+      console.log(e);
     }
 
-    settings.color = color;
     setRenderSettings(settings);
   }, [props.ob]);
 
@@ -162,7 +171,12 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <>
+    <ErrorBoundary
+      FallbackComponent={({ error }) => {
+        console.error(error);
+        return <></>;
+      }}
+    >
       {renderSettings && (
         <>
           {props.ob.radius && drawIndicator && (
@@ -343,7 +357,7 @@ const ObservationPoint: React.FC<Props> = (props: Props) => {
           )
         </>
       )}
-    </>
+    </ErrorBoundary>
   );
 };
 
