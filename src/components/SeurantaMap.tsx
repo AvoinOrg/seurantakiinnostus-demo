@@ -193,7 +193,7 @@ const SeurantaMap: React.FC<any> = () => {
         'date',
       );
 
-      const items: any = [];
+      let items: any = [];
 
       const points = arrayToObject(obsPointsFiltered.concat(obsFiltered), 'id');
 
@@ -515,6 +515,10 @@ const SeurantaMap: React.FC<any> = () => {
         }
       });
       setLoading(false);
+
+      items = items.filter((item) => item.id != null);
+      items = _.uniqBy(items, 'id');
+
       setObsPointItems(items);
     }
   }, [
