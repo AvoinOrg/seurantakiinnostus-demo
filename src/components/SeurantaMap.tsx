@@ -461,6 +461,10 @@ const SeurantaMap: React.FC<any> = () => {
             itemData.serviceKeywords = service.keywords;
             itemData.serviceDescription = service.description;
             itemData.serviceName = service.service_name;
+          } else {
+            itemData.serviceKeywords = [];
+            itemData.serviceDescription = null;
+            itemData.serviceName = null;
           }
 
           // If either keyword or hashtag matches, add to results. Or, if no keywords or hashtags are defined, add to results.
