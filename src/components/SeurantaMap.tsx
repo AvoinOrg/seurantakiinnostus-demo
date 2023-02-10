@@ -200,307 +200,318 @@ const SeurantaMap: React.FC<any> = () => {
       const defs = arrayToObject(monInterestDefsFiltered, 'id');
 
       monInterestsFiltered.forEach((interest) => {
-        const itemData: any = {};
-        itemData.id = interest.id;
-        itemData.radius = interest.radius;
+        try {
+          const itemData: any = {};
+          itemData.id = interest.id;
+          itemData.radius = interest.radius;
 
-        const def = defs[interest.monInterestDefId];
+          const def = defs[interest.monInterestDefId];
 
-        if (def) {
-          itemData.hashtags = def.hashtags;
-          itemData.Tv = def.Tv;
-          itemData.Ts = def.Ts;
-          itemData.Tr = def.Tr;
-          itemData.Sv = def.Sv;
-          itemData.Ss = def.Ss;
-          itemData.Sr = def.Sr;
-          itemData.kSv = def.kSv;
-          itemData.kSs = def.kSs;
-          itemData.kSr = def.kSr;
-          itemData.Sinf = def.Sinf;
-          itemData.dSv = def.dSv;
-          itemData.Somin = def.Somin;
+          if (def) {
+            itemData.hashtags = def.hashtags;
+            itemData.Tv = def.Tv;
+            itemData.Ts = def.Ts;
+            itemData.Tr = def.Tr;
+            itemData.Sv = def.Sv;
+            itemData.Ss = def.Ss;
+            itemData.Sr = def.Sr;
+            itemData.kSv = def.kSv;
+            itemData.kSs = def.kSs;
+            itemData.kSr = def.kSr;
+            itemData.Sinf = def.Sinf;
+            itemData.dSv = def.dSv;
+            itemData.Somin = def.Somin;
 
-          itemData.trigger = null;
+            itemData.trigger = null;
 
-          monInterestTriggersFiltered.forEach((trig) => {
-            if (trig.monInterestId === interest.id) {
-              if (itemData.trigger && trig.date < itemData.trigger) {
-                return;
+            monInterestTriggersFiltered.forEach((trig) => {
+              if (trig.monInterestId === interest.id) {
+                if (itemData.trigger && trig.date < itemData.trigger) {
+                  return;
+                }
+                if (trig.obsId && points[trig.obsId]) {
+                  trig.date == points[trig.obsId].date;
+                }
+                itemData.trigger = trig;
               }
-              if (trig.obsId && points[trig.obsId]) {
-                trig.date == points[trig.obsId].date;
-              }
-              itemData.trigger = trig;
+            });
+
+            if (itemData.trigger != null) {
+              itemData.hashtags = itemData.hashtags.concat(
+                itemData.trigger.hashtags,
+              );
             }
-          });
 
-          if (itemData.trigger != null) {
-            itemData.hashtags = itemData.hashtags.concat(
-              itemData.trigger.hashtags,
-            );
-          }
+            if (itemData.trigger && itemData.trigger.Spmin != null) {
+              itemData.Spmin = itemData.trigger.Spmin;
+            } else {
+              itemData.Spmin = def.Spmin;
+            }
 
-          if (itemData.trigger && itemData.trigger.Spmin != null) {
-            itemData.Spmin = itemData.trigger.Spmin;
-          } else {
-            itemData.Spmin = def.Spmin;
-          }
+            if (itemData.trigger && itemData.trigger.Spmax != null) {
+              itemData.Spmax = itemData.trigger.Spmax;
+            } else {
+              itemData.Spmax = def.Spmax;
+            }
 
-          if (itemData.trigger && itemData.trigger.Spmax != null) {
-            itemData.Spmax = itemData.trigger.Spmax;
-          } else {
-            itemData.Spmax = def.Spmax;
-          }
+            const firstObs = points[interest.obsId];
 
-          const firstObs = points[interest.obsId];
+            let firstObsId = null;
 
-          let firstObsId = null;
+            if (firstObs) {
+              itemData.t0 = firstObs.date;
+              itemData.lat = firstObs.lat;
+              itemData.long = firstObs.long;
 
-          if (firstObs) {
-            itemData.t0 = firstObs.date;
-            itemData.lat = firstObs.lat;
-            itemData.long = firstObs.long;
+              itemData.hashtags = itemData.hashtags.concat(firstObs.hashtags);
+            } else {
+              itemData.t0 = interest.date;
+              itemData.lat = interest.lat;
+              itemData.long = interest.long;
+            }
 
-            itemData.hashtags = itemData.hashtags.concat(firstObs.hashtags);
-          } else {
-            itemData.t0 = interest.date;
-            itemData.lat = interest.lat;
-            itemData.long = interest.long;
-          }
+            itemData.created = itemData.t0;
+            if (
+              itemData.trigger &&
+              itemData.trigger.obsId &&
+              points[itemData.trigger.obsId]
+            ) {
+              itemData.t0 = points[itemData.trigger.obsId].date;
+            }
 
-          itemData.created = itemData.t0;
-          if (
-            itemData.trigger &&
-            itemData.trigger.obsId &&
-            points[itemData.trigger.obsId]
-          ) {
-            itemData.t0 = points[itemData.trigger.obsId].date;
-          }
-
-          for (let i = 0; i < lakes.features.length; i++) {
-            const lake = lakes.features[i];
-            const coords = lake.geometry.coordinates;
-            for (let j = 0; j < coords.length; j++) {
-              if (isInside([itemData.lat, itemData.long], coords[j])) {
-                itemData.lake = lake;
-                itemData.lakeName = lake.properties.Nimi;
-                break;
+            for (let i = 0; i < lakes.features.length; i++) {
+              const lake = lakes.features[i];
+              const coords = lake.geometry.coordinates;
+              for (let j = 0; j < coords.length; j++) {
+                if (isInside([itemData.lat, itemData.long], coords[j])) {
+                  itemData.lake = lake;
+                  itemData.lakeName = lake.properties.Nimi;
+                  break;
+                }
               }
             }
-          }
 
-          const obDates: any[] = [dateLimit];
+            const obDates: any[] = [dateLimit];
 
-          itemData.serviceId = interest.serviceId;
+            itemData.serviceId = interest.serviceId;
 
-          itemData.hashtags = itemData.hashtags.concat(interest.hashtags);
+            itemData.hashtags = itemData.hashtags.concat(interest.hashtags);
 
-          const serviceId =
-            itemData.trigger && itemData.trigger.serviceId != null
-              ? itemData.trigger.serviceId
-              : interest.serviceId;
+            const serviceId =
+              itemData.trigger && itemData.trigger.serviceId != null
+                ? itemData.trigger.serviceId
+                : interest.serviceId;
 
-          if (serviceId != null && serviceId) {
-            for (let i = 0; i < obsFiltered.length; i++) {
-              const ob = obsFiltered[i];
-              if (itemData.t0 < ob.date) {
-                if (ob.serviceId === serviceId && ob.id !== firstObsId) {
-                  if (
-                    haverSine(ob.lat, ob.long, itemData.lat, itemData.long) <=
-                    itemData.radius
-                  ) {
+            if (serviceId != null && serviceId) {
+              for (let i = 0; i < obsFiltered.length; i++) {
+                const ob = obsFiltered[i];
+                if (itemData.t0 < ob.date) {
+                  if (ob.serviceId === serviceId && ob.id !== firstObsId) {
                     if (
-                      !itemData.lake ||
-                      (itemData.lake &&
-                        isInside(
-                          [itemData.lat, itemData.long],
-                          itemData.lake.geometry.coordinates[0],
-                        ))
+                      haverSine(ob.lat, ob.long, itemData.lat, itemData.long) <=
+                      itemData.radius
                     ) {
-                      obDates.unshift(ob.date);
+                      if (
+                        !itemData.lake ||
+                        (itemData.lake &&
+                          isInside(
+                            [itemData.lat, itemData.long],
+                            itemData.lake.geometry.coordinates[0],
+                          ))
+                      ) {
+                        obDates.unshift(ob.date);
 
-                      itemData.hashtags = itemData.hashtags.concat(ob.hashtags);
+                        itemData.hashtags = itemData.hashtags.concat(
+                          ob.hashtags,
+                        );
+                      }
                     }
                   }
+                } else {
+                  break;
                 }
-              } else {
-                break;
               }
             }
-          }
 
-          itemData.lastObDate =
-            obDates.length > 1 ? obDates[obDates.length - 2] : null;
+            itemData.lastObDate =
+              obDates.length > 1 ? obDates[obDates.length - 2] : null;
 
-          itemData.count = obDates.length - 1;
+            itemData.count = obDates.length - 1;
 
-          let lastDate = itemData.t0;
-          let phase = '';
-          let hoursElapsed = 0;
+            let lastDate = itemData.t0;
+            let phase = '';
+            let hoursElapsed = 0;
 
-          if (itemData.trigger && itemData.trigger.startPhase) {
-            switch (itemData.trigger.startPhase) {
-              case 'similarity':
-                hoursElapsed = itemData.Tv * 24;
-                break;
-              case 'reobservation':
-                hoursElapsed = (itemData.Tv + itemData.Ts) * 24;
-                break;
-              case 'indefinite':
-                hoursElapsed = (itemData.Tv + itemData.Ts + itemData.Tr) * 24;
-                break;
-              default:
-                hoursElapsed = 0;
+            if (itemData.trigger && itemData.trigger.startPhase) {
+              switch (itemData.trigger.startPhase) {
+                case 'similarity':
+                  hoursElapsed = itemData.Tv * 24;
+                  break;
+                case 'reobservation':
+                  hoursElapsed = (itemData.Tv + itemData.Ts) * 24;
+                  break;
+                case 'indefinite':
+                  hoursElapsed = (itemData.Tv + itemData.Ts + itemData.Tr) * 24;
+                  break;
+                default:
+                  hoursElapsed = 0;
+              }
             }
-          }
 
-          obDates.forEach((date) => {
-            if (date >= itemData.t0) {
-              const hours = hoursBetweenTimestamps(date, lastDate);
-              let totalHours = hours + hoursElapsed;
+            obDates.forEach((date) => {
+              if (date >= itemData.t0) {
+                const hours = hoursBetweenTimestamps(date, lastDate);
+                let totalHours = hours + hoursElapsed;
 
-              if (totalHours < itemData.Tv * 24) {
-                if (
-                  (itemData.trigger &&
-                    itemData.trigger.phaseSkips.includes('validation')) ||
-                  date === dateLimit
+                if (totalHours < itemData.Tv * 24) {
+                  if (
+                    (itemData.trigger &&
+                      itemData.trigger.phaseSkips.includes('validation')) ||
+                    date === dateLimit
+                  ) {
+                    hoursElapsed = totalHours;
+                    phase = 'validation';
+                  } else {
+                    hoursElapsed = 0;
+                    phase = 'validation';
+                  }
+                } else if (totalHours < (itemData.Tv + itemData.Ts) * 24) {
+                  if (
+                    (itemData.trigger &&
+                      itemData.trigger.phaseSkips.includes('similarity')) ||
+                    date === dateLimit
+                  ) {
+                    hoursElapsed = totalHours;
+                    phase = 'similarity';
+                  } else {
+                    hoursElapsed = 0;
+                    phase = 'validation';
+                  }
+                } else if (
+                  totalHours <
+                  (itemData.Tv + itemData.Ts + itemData.Tr) * 24
                 ) {
-                  hoursElapsed = totalHours;
-                  phase = 'validation';
+                  if (
+                    (itemData.trigger &&
+                      itemData.trigger.phaseSkips.includes('reobservation')) ||
+                    date === dateLimit
+                  ) {
+                    hoursElapsed = totalHours;
+                    phase = 'reobservation';
+                  } else {
+                    hoursElapsed = 0;
+                    phase = 'validation';
+                  }
                 } else {
-                  hoursElapsed = 0;
-                  phase = 'validation';
+                  if (
+                    (itemData.trigger &&
+                      itemData.trigger.phaseSkips.includes('indefinite')) ||
+                    date === dateLimit
+                  ) {
+                    hoursElapsed = totalHours;
+                    phase = 'indefinite';
+                  } else {
+                    hoursElapsed = 0;
+                    phase = 'validation';
+                  }
                 }
-              } else if (totalHours < (itemData.Tv + itemData.Ts) * 24) {
-                if (
-                  (itemData.trigger &&
-                    itemData.trigger.phaseSkips.includes('similarity')) ||
-                  date === dateLimit
-                ) {
-                  hoursElapsed = totalHours;
-                  phase = 'similarity';
-                } else {
-                  hoursElapsed = 0;
-                  phase = 'validation';
-                }
-              } else if (
-                totalHours <
-                (itemData.Tv + itemData.Ts + itemData.Tr) * 24
+                lastDate = date;
+              }
+            });
+
+            let s = 0;
+
+            if (phase === 'validation') {
+              const hours = hoursElapsed;
+              const inc =
+                itemData.kSv != null ? (itemData.kSv * hours) / 24 : 0;
+              s = itemData.Sv + inc;
+            } else if (phase === 'similarity') {
+              const hours = hoursElapsed - itemData.Tv;
+              const inc =
+                itemData.kSs != null ? (itemData.kSs * hours) / 24 : 0;
+              s = itemData.Ss + inc;
+            } else if (phase === 'reobservation') {
+              const hours =
+                hoursElapsed - (itemData.Tv + itemData.Ts + itemData.Tr);
+              const inc =
+                itemData.kSr != null ? (itemData.kSr * hours) / 24 : 0;
+              s = itemData.Sr + inc;
+            } else if (itemData.Sinf) {
+              s = itemData.Sinf;
+            }
+
+            if (itemData.trigger && itemData.trigger.Sd) {
+              const hours = hoursBetweenTimestamps(lastDate, itemData.t0);
+              if (!itemData.trigger.Td || hours < itemData.trigger.Td * 24) {
+                const inc = itemData.trigger.kSd
+                  ? (itemData.trigger.kSd * hours) / 24
+                  : 0;
+                const val = itemData.trigger.Sd + inc;
+                s += itemData.trigger.Somin
+                  ? Math.max(val, itemData.trigger.Somin)
+                  : val;
+              }
+            }
+
+            itemData.s = s;
+            itemData.phase = phase;
+
+            itemData.hashtags = _.uniq(itemData.hashtags);
+
+            const service = services.data.find(
+              (s) => s.service_code === itemData.serviceId,
+            );
+
+            if (service) {
+              itemData.serviceKeywords = service.keywords;
+              itemData.serviceDescription = service.description;
+              itemData.serviceName = service.service_name;
+            } else {
+              itemData.serviceKeywords = [];
+              itemData.serviceDescription = null;
+              itemData.serviceName = null;
+            }
+
+            // If either keyword or hashtag matches, add to results. Or, if no keywords or hashtags are defined, add to results.
+            itemData.serviceKeywords = itemData.serviceKeywords.map(
+              (element) => {
+                return element.toLowerCase();
+              },
+            );
+
+            itemData.hashtags = itemData.hashtags.map((element) => {
+              return element.toLowerCase();
+            });
+
+            let containsHashtags = false;
+            let containsKeywords = false;
+
+            if (extraParams.hashtags.length > 0) {
+              if (arrIncludesAny(itemData.hashtags, extraParams.hashtags)) {
+                containsHashtags = true;
+              }
+            }
+
+            if (extraParams.keywords.length > 0) {
+              if (
+                arrIncludesAny(itemData.serviceKeywords, extraParams.keywords)
               ) {
-                if (
-                  (itemData.trigger &&
-                    itemData.trigger.phaseSkips.includes('reobservation')) ||
-                  date === dateLimit
-                ) {
-                  hoursElapsed = totalHours;
-                  phase = 'reobservation';
-                } else {
-                  hoursElapsed = 0;
-                  phase = 'validation';
-                }
-              } else {
-                if (
-                  (itemData.trigger &&
-                    itemData.trigger.phaseSkips.includes('indefinite')) ||
-                  date === dateLimit
-                ) {
-                  hoursElapsed = totalHours;
-                  phase = 'indefinite';
-                } else {
-                  hoursElapsed = 0;
-                  phase = 'validation';
-                }
+                containsKeywords = true;
               }
-              lastDate = date;
             }
-          });
 
-          let s = 0;
-
-          if (phase === 'validation') {
-            const hours = hoursElapsed;
-            const inc = itemData.kSv != null ? (itemData.kSv * hours) / 24 : 0;
-            s = itemData.Sv + inc;
-          } else if (phase === 'similarity') {
-            const hours = hoursElapsed - itemData.Tv;
-            const inc = itemData.kSs != null ? (itemData.kSs * hours) / 24 : 0;
-            s = itemData.Ss + inc;
-          } else if (phase === 'reobservation') {
-            const hours =
-              hoursElapsed - (itemData.Tv + itemData.Ts + itemData.Tr);
-            const inc = itemData.kSr != null ? (itemData.kSr * hours) / 24 : 0;
-            s = itemData.Sr + inc;
-          } else if (itemData.Sinf) {
-            s = itemData.Sinf;
-          }
-
-          if (itemData.trigger && itemData.trigger.Sd) {
-            const hours = hoursBetweenTimestamps(lastDate, itemData.t0);
-            if (!itemData.trigger.Td || hours < itemData.trigger.Td * 24) {
-              const inc = itemData.trigger.kSd
-                ? (itemData.trigger.kSd * hours) / 24
-                : 0;
-              const val = itemData.trigger.Sd + inc;
-              s += itemData.trigger.Somin
-                ? Math.max(val, itemData.trigger.Somin)
-                : val;
-            }
-          }
-
-          itemData.s = s;
-          itemData.phase = phase;
-
-          itemData.hashtags = _.uniq(itemData.hashtags);
-
-          const service = services.data.find(
-            (s) => s.service_code === itemData.serviceId,
-          );
-
-          if (service) {
-            itemData.serviceKeywords = service.keywords;
-            itemData.serviceDescription = service.description;
-            itemData.serviceName = service.service_name;
-          } else {
-            itemData.serviceKeywords = [];
-            itemData.serviceDescription = null;
-            itemData.serviceName = null;
-          }
-
-          // If either keyword or hashtag matches, add to results. Or, if no keywords or hashtags are defined, add to results.
-          itemData.serviceKeywords = itemData.serviceKeywords.map((element) => {
-            return element.toLowerCase();
-          });
-
-          itemData.hashtags = itemData.hashtags.map((element) => {
-            return element.toLowerCase();
-          });
-
-          let containsHashtags = false;
-          let containsKeywords = false;
-
-          if (extraParams.hashtags.length > 0) {
-            if (arrIncludesAny(itemData.hashtags, extraParams.hashtags)) {
-              containsHashtags = true;
-            }
-          }
-
-          if (extraParams.keywords.length > 0) {
-            if (
-              arrIncludesAny(itemData.serviceKeywords, extraParams.keywords)
+            if (containsKeywords || containsHashtags) {
+              items.push(itemData);
+            } else if (
+              extraParams.keywords.length === 0 &&
+              extraParams.hashtags.length === 0
             ) {
-              containsKeywords = true;
+              items.push(itemData);
             }
           }
-
-          if (containsKeywords || containsHashtags) {
-            items.push(itemData);
-          } else if (
-            extraParams.keywords.length === 0 &&
-            extraParams.hashtags.length === 0
-          ) {
-            items.push(itemData);
-          }
+        } catch (error) {
+          console.error(error);
         }
       });
       setLoading(false);
