@@ -68,14 +68,16 @@ export const StateProvider = (props) => {
       };
 
       for (const entry of searchParams.entries()) {
-        const [param, value] = entry;
-        if (param === 'apiId') {
+        let [param, value] = entry;
+        param = param.toLowerCase();
+
+        if (param === 'apiid') {
           setParamApiId(value);
           setPriority(null);
-        } else if (param === 'apiKey') {
+        } else if (param === 'apikey') {
           setParamApiKey(value);
           setApiKey(value);
-        } else if (param === 'editorApiPriorityLevel') {
+        } else if (param === 'editorapiprioritylevel') {
           setParamEditorApiPriorityLevel(Number(value));
           setSetUIPriorityLevel(Number(value));
         } else if (param === 'time') {
@@ -86,11 +88,11 @@ export const StateProvider = (props) => {
           newViewParams.lon = Number(value);
         } else if (param === 'zoom') {
           newViewParams.zoom = Number(value);
-        } else if (param === 'hashtags') {
+        } else if (param === 'submissionhashtags') {
           extraUrlParams.hashtags = value.split(',').map((element) => {
             return element.toLowerCase();
           });
-        } else if (param === 'keywords') {
+        } else if (param === 'servicekeywords') {
           extraUrlParams.keywords = value.split(',').map((element) => {
             return element.toLowerCase();
           });
